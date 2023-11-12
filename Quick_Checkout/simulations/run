@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/quick_checkout -n .:../src $*
+# for shared lib, use: opp_run -l ../src/quick_checkout -n .:../src $*
