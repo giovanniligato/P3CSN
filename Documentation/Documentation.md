@@ -1,15 +1,15 @@
 # A PECSN' project
 
-
-
 ## Objectives
+
 Analizzare il comportamento delle code sia in termini di dimensioni che in termini di tempo di attesa per ogni cliente.
 
-
 ## Key Performance Indices (KPIs)
+
 The main objectives of this study are comparing the:
 
 ### Main
+
 - average length of the queues
 - average response time
 
@@ -17,8 +17,6 @@ The main objectives of this study are comparing the:
 ### Other KPIs
 - average service time calculated w.r.t the complete simulation time (Tempo di lavoro medio di un cassiere considerando anche gli intervalli di tempo in cui non ci sono clienti in fila)
 - average loss of customers (due to too large queue)
-
-
 
 ## Model
 
