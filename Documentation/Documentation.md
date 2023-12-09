@@ -58,6 +58,8 @@ $$\left\{\begin{matrix}
  \pi_j = \frac{(1-\alpha)}{C\cdot (1-p)} & \ \ r+1\leq j \leq n
 \end{matrix}\right.$$
 
+
+
 ## Validation
 AKA Common Sense Validation:
 Prima di passare all'implementazione del modello teorico bisogna cercare di validare il modello considerando un sistema reale. E' chiaro che considerando un qualsiasi supermercato (tranne il CarreFour di Lucca) risulta che le assunzioni fatte non sono poi così drastiche perché:
@@ -75,13 +77,40 @@ Prima di passare all'implementazione del modello teorico bisogna cercare di vali
 
 
 ## Factors
+Considering the factors here we have:
 
+- p: percentage of quick-checkout tills;
+- K: maximum number of items that a customer can have in his (her) cart to be served in a quick-checkout till;
+  
+## Parameters
+When we consider the parameters we have:
+
+- $C$ total number of tills;
+- Distribution of the inter-arrival time of customers:
+  - Exponential:
+    - rate T;
+- Distribution of the number of items in a customer's cart:
+  - Exponential:
+    - rate M;
+  - Lognormal:
+    - mean M;
+    - standard deviation $\sigma$;
 
 
 ## Simulation Tool
-Omnet++
+The simulation tool used for this project is Omnet++. 
 
 ## Implementation
+To implement the theoretical model we will consider the following modules:
+
+- **Source**: generates customers according to the inter-arrival time distribution;
+- **Local-Sink**: represents a till;
+- **Queue**: represents the queue of a till;
+- **Global-Sink**: collects statistics about the simulation run.
+- **LoadBalancer**: represents the load balancer that routes the customers to the two subsystems.
+
+
+
 
 ## Verification of the Implemented Simulation Model
 
