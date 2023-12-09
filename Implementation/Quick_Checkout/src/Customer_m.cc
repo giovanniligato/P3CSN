@@ -175,29 +175,29 @@ Customer& Customer::operator=(const Customer& other)
 
 void Customer::copy(const Customer& other)
 {
-    this->nOfItems = other.nOfItems;
+    this->numberOfItems = other.numberOfItems;
 }
 
 void Customer::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::omnetpp::cPacket::parsimPack(b);
-    doParsimPacking(b,this->nOfItems);
+    doParsimPacking(b,this->numberOfItems);
 }
 
 void Customer::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::omnetpp::cPacket::parsimUnpack(b);
-    doParsimUnpacking(b,this->nOfItems);
+    doParsimUnpacking(b,this->numberOfItems);
 }
 
-int Customer::getNOfItems() const
+int Customer::getNumberOfItems() const
 {
-    return this->nOfItems;
+    return this->numberOfItems;
 }
 
-void Customer::setNOfItems(int nOfItems)
+void Customer::setNumberOfItems(int numberOfItems)
 {
-    this->nOfItems = nOfItems;
+    this->numberOfItems = numberOfItems;
 }
 
 class CustomerDescriptor : public omnetpp::cClassDescriptor
@@ -205,7 +205,7 @@ class CustomerDescriptor : public omnetpp::cClassDescriptor
   private:
     mutable const char **propertyNames;
     enum FieldConstants {
-        FIELD_nOfItems,
+        FIELD_numberOfItems,
     };
   public:
     CustomerDescriptor();
@@ -284,7 +284,7 @@ unsigned int CustomerDescriptor::getFieldTypeFlags(int field) const
         field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_nOfItems
+        FD_ISEDITABLE,    // FIELD_numberOfItems
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
@@ -298,7 +298,7 @@ const char *CustomerDescriptor::getFieldName(int field) const
         field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
-        "nOfItems",
+        "numberOfItems",
     };
     return (field >= 0 && field < 1) ? fieldNames[field] : nullptr;
 }
@@ -307,7 +307,7 @@ int CustomerDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
     int baseIndex = base ? base->getFieldCount() : 0;
-    if (strcmp(fieldName, "nOfItems") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "numberOfItems") == 0) return baseIndex + 0;
     return base ? base->findField(fieldName) : -1;
 }
 
@@ -320,7 +320,7 @@ const char *CustomerDescriptor::getFieldTypeString(int field) const
         field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
-        "int",    // FIELD_nOfItems
+        "int",    // FIELD_numberOfItems
     };
     return (field >= 0 && field < 1) ? fieldTypeStrings[field] : nullptr;
 }
@@ -405,7 +405,7 @@ std::string CustomerDescriptor::getFieldValueAsString(omnetpp::any_ptr object, i
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
-        case FIELD_nOfItems: return long2string(pp->getNOfItems());
+        case FIELD_numberOfItems: return long2string(pp->getNumberOfItems());
         default: return "";
     }
 }
@@ -422,7 +422,7 @@ void CustomerDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int fiel
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
-        case FIELD_nOfItems: pp->setNOfItems(string2long(value)); break;
+        case FIELD_numberOfItems: pp->setNumberOfItems(string2long(value)); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Customer'", field);
     }
 }
@@ -437,7 +437,7 @@ omnetpp::cValue CustomerDescriptor::getFieldValue(omnetpp::any_ptr object, int f
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
-        case FIELD_nOfItems: return pp->getNOfItems();
+        case FIELD_numberOfItems: return pp->getNumberOfItems();
         default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Customer' as cValue -- field index out of range?", field);
     }
 }
@@ -454,7 +454,7 @@ void CustomerDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
-        case FIELD_nOfItems: pp->setNOfItems(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_numberOfItems: pp->setNumberOfItems(omnetpp::checked_int_cast<int>(value.intValue())); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Customer'", field);
     }
 }

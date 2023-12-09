@@ -16,7 +16,7 @@ Define_Module(Queue);
 
 Queue::~Queue()
 {
-    delete jobServiced;
+    delete customerServiced;
     cancelAndDelete(endServiceMsg);
 }
 
@@ -38,15 +38,15 @@ void Queue::initialize()
 void Queue::handleMessage(cMessage *msg)
 {
     if (msg == endServiceMsg) {
-        endService(jobServiced);
+        endService(customerServiced);
         if (queue.isEmpty()) {
-            jobServiced = nullptr;
+            customerServiced = nullptr;
             emit(busySignal, false);
         }
         else {
-            jobServiced = getFromQueue();
+            customerServiced = getFromQueue();
             emit(queueLengthSignal, length());
-            simtime_t serviceTime = startService(jobServiced);
+            simtime_t serviceTime = startService(customerServiced);
             scheduleAt(simTime()+serviceTime, endServiceMsg);
         }
     }
@@ -54,17 +54,17 @@ void Queue::handleMessage(cMessage *msg)
         Customer *customer = check_and_cast<Customer *>(msg);
         arrival(customer);
 
-        if (!jobServiced) {
+        if (!customerServiced) {
             // processor was idle
-            jobServiced = job;
+            customerServiced = customer;
             emit(busySignal, true);
-            simtime_t serviceTime = startService(jobServiced);
+            simtime_t serviceTime = startService(customerServiced);
             scheduleAt(simTime()+serviceTime, endServiceMsg);
         }
         else {
             // check for container capacity
             if (capacity >= 0 && queue.getLength() >= capacity) {
-                EV << "Capacity full! Job dropped.\n";
+                EV << "Capacity full! Customer dropped.\n";
                 if (hasGUI())
                     bubble("Dropped!");
                 emit(droppedSignal, 1);
@@ -80,11 +80,11 @@ void Queue::handleMessage(cMessage *msg)
 
 void Queue::refreshDisplay() const
 {
-    getDisplayString().setTagArg("i2", 0, jobServiced ? "status/execute" : "");
+    getDisplayString().setTagArg("i2", 0, customerServiced ? "status/execute" : "");
     getDisplayString().setTagArg("i", 1, queue.isEmpty() ? "" : "cyan");
 }
 
-Job *Queue::getFromQueue()
+Customer *Queue::getFromQueue()
 {
     Customer *customer;
     if (fifo) {
@@ -103,15 +103,15 @@ int Queue::length()
     return queue.getLength();
 }
 
-void Queue::arrival(Job *job)
+void Queue::arrival(Customer *customer)
 {
-    job->setTimestamp();
+    customer->setTimestamp();
 }
 
-simtime_t Queue::startService(Job *job)
+simtime_t Queue::startService(Customer *customer)
 {
     // gather queueing time statistics
-    simtime_t d = simTime() - job->getTimestamp();
+    simtime_t d = simTime() - customer->getTimestamp();
     emit(queueingTimeSignal, d);
     customer->setTotalQueueingTime(customer->getTotalQueueingTime() + d);
     EV << "Starting service of " << customer->getName() << endl;
@@ -119,12 +119,12 @@ simtime_t Queue::startService(Job *job)
     return par("serviceTime").doubleValue();
 }
 
-void Queue::endService(Job *job)
+void Queue::endService(Customer *customer)
 {
-    EV << "Finishing service of " << job->getName() << endl;
-    simtime_t d = simTime() - job->getTimestamp();
-    job->setTotalServiceTime(job->getTotalServiceTime() + d);
-    send(job, "out");
+    EV << "Finishing service of " << customer->getName() << endl;
+    simtime_t d = simTime() - customer->getTimestamp();
+    customer->setTotalServiceTime(customer->getTotalServiceTime() + d);
+    send(customer, "out");
 }
 
 void Queue::finish()

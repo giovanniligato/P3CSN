@@ -20,7 +20,11 @@ namespace queueing {
 class QUEUEING_API Classifier : public cSimpleModule
 {
     private:
-        const char *dispatchField;   // the message's field or parameter we are dispatching on
+        const char *policy;   // The policy we are using 
+        int K;
+        int C;
+        int p;
+
     protected:
         virtual void initialize() override;
         virtual void handleMessage(cMessage *msg) override;

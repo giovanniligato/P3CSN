@@ -14,33 +14,32 @@
 
 namespace queueing {
 
-class Job;
+class Customer;
 
 /**
- * Abstract base class for job generator modules
+ * Abstract base class for customer generator modules
  */
 class QUEUEING_API SourceBase : public cSimpleModule
 {
     protected:
-        int jobCounter;
-        std::string jobName;
+        int customerCounter;
         simsignal_t createdSignal;
     protected:
         virtual void initialize() override;
-        virtual Job *createJob();
+        virtual Customer *createCustomer();
         virtual void finish() override;
 };
 
 
 /**
- * Generates jobs; see NED file for more info.
+ * Generates customers; see NED file for more info.
  */
 class QUEUEING_API Source : public SourceBase
 {
     private:
         simtime_t startTime;
         simtime_t stopTime;
-        int numJobs;
+        int numCustomers;
 
     protected:
         virtual void initialize() override;
@@ -49,7 +48,7 @@ class QUEUEING_API Source : public SourceBase
 
 
 /**
- * Generates jobs; see NED file for more info.
+ * Generates customers; see NED file for more info.
  */
 class QUEUEING_API SourceOnce : public SourceBase
 {

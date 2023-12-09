@@ -22,9 +22,13 @@ simple Classifier
     parameters:
         @group(Queueing);
         @display("i=block/classifier");
-        string dispatchField @enum("type","priority") = default("type");
+        int K = default(5);
+        // Fare due possibilità per gestire numero minimo di persone in coda
+        string policy @enum("equallylikely", "jtsq") = default("equallylikely");
+        
+        
     gates:
-        input in[];
+        input in;
         output out[];
-        output rest;     // messages that were not classified
+   	
 }

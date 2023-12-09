@@ -14,7 +14,7 @@
 
 namespace queueing {
 
-class Job;
+class Customer;
 
 /**
  * Abstract base class for single-server queues.
@@ -46,7 +46,7 @@ class QUEUEING_API Queue : public cSimpleModule
         virtual void finish() override;
 
         // hook functions to (re)define behaviour
-        virtual void arrival(Job *job);
+        virtual void arrival(Customer *customer);
         virtual simtime_t startService(Customer *customer);
         virtual void endService(Customer *customer);
 };

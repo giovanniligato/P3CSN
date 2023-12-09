@@ -25,14 +25,14 @@ class Customer;
  * //
  * packet Customer
  * {
- *     int nOfItems;
+ *     int numberOfItems;
  * }
  * </pre>
  */
 class Customer : public ::omnetpp::cPacket
 {
   protected:
-    int nOfItems = 0;
+    int numberOfItems = 0;
 
   private:
     void copy(const Customer& other);
@@ -49,8 +49,8 @@ class Customer : public ::omnetpp::cPacket
     virtual void parsimPack(omnetpp::cCommBuffer *b) const override;
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
-    virtual int getNOfItems() const;
-    virtual void setNOfItems(int nOfItems);
+    virtual int getNumberOfItems() const;
+    virtual void setNumberOfItems(int numberOfItems);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const Customer& obj) {obj.parsimPack(b);}

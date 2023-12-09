@@ -9,6 +9,7 @@
 
 #include "Classifier.h"
 #include "Customer_m.h"
+#include <math.h>
 
 namespace queueing {
 
@@ -16,26 +17,58 @@ Define_Module(Classifier);
 
 void Classifier::initialize()
 {
-    dispatchField = par("dispatchField");
+    policy = par("policy");
+
+    K=par("K");
+    C=getParentModule()->par("C");
+    p=getParentModule()->par("p");
+
 }
 
 void Classifier::handleMessage(cMessage *msg)
 {
     Customer *customer = check_and_cast<Customer *>(msg);
     int outGateIndex = -1;
-    /*
-    if (strcmp(dispatchField, "type") == 0)
-        //outGateIndex = job->getKind();
-    else if (strcmp(dispatchField, "priority") == 0)
-        outGateIndex = customer->getNOfItems();
-    else
-        throw cRuntimeError("invalid dispatchField parameter, must be \"type\" or \"priority\"");  // TODO we could look for the value in the dynamically added parameters too
+    int quickTills = floor(C*p);
+    int normalTills = C - quickTills;
 
-    if (outGateIndex < 0 || outGateIndex >= gateSize("out"))
-        send(customer, "rest");
-    else
-        send(customer, "out", outGateIndex);
-    */
+    if(customer->getNumberOfItems() <= K){
+        if(strcmp(policy, "equallylikely") == 0){
+            outGateIndex = uniform(0, quickTills);
+        }
+        else if(strcmp(policy, "jtsq") == 0){
+            int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();
+            for(int i=1; i<quickTills; i++){
+                if((check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", i)))->getLength() < minQueueIndex){
+                    minQueueIndex = i;
+                }
+            }
+            // In the case of two queues having the same length, the first one is chosen
+            outGateIndex = minQueueIndex;
+        }
+        else
+            throw cRuntimeError("Invalid policy parameter, must be \"equallylikely\" or \"jtsq\"");
+    }
+    else{
+        if(strcmp(policy, "equallylikely") == 0){
+            outGateIndex = uniform(quickTills, C);
+        }
+        else if(strcmp(policy, "jtsq") == 0){
+            int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();
+            for(int i=quickTills+1; i<C; i++){
+                if((check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", i)))->getLength() < minQueueIndex){
+                    minQueueIndex = i;
+                }
+            }
+            // In the case of two queues having the same length, the first one is chosen
+            outGateIndex = minQueueIndex;
+        }
+        else
+            throw cRuntimeError("Invalid policy parameter, must be \"equallylikely\" or \"jtsq\"");
+    }
+
+    send(customer, "out", outGateIndex);
+
 }
 
 }; //namespace

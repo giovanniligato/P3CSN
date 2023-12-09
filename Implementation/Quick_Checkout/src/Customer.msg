@@ -17,5 +17,5 @@
 // TODO generated message class
 //
 packet Customer {
-    int nOfItems;
+    int numberOfItems;
 }
