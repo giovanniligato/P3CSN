@@ -14,7 +14,7 @@
 // 
 
 package quick_checkout;
-// import quick_checkout.LocalSink;
+import quick_checkout.LocalSink;
 import quick_checkout.Queue;
 import quick_checkout.Classifier;
 
@@ -37,15 +37,15 @@ module Checkout
         queues[C]: Queue {
             @display("p=287,184");
         }
-        // localSink[C]: LocalSink {
-        //    @display("p=528,184");
-        // }
+        localSink[C]: LocalSink {
+            @display("p=528,184");
+        }
     connections:
         in --> classifier.in;
         for i=0..C-1 {
             classifier.out++ --> queues[i].in;
-            // queues[i].out --> localSink[i].in;
-            // localSink[i].out --> out;
+            queues[i].out --> localSink[i].in;
+            localSink[i].out --> out;
         }
 
 

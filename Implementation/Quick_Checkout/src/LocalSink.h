@@ -15,9 +15,9 @@
 namespace queueing {
 
 /**
- * Consumes jobs; see NED file for more info.
+ * Receives customers and send them to the output port; see NED file for more info.
  */
-class QUEUEING_API Sink : public cSimpleModule
+class QUEUEING_API LocalSink : public cSimpleModule
 {
   private:
 	simsignal_t lifeTimeSignal;
@@ -27,7 +27,7 @@ class QUEUEING_API Sink : public cSimpleModule
 	simsignal_t totalDelayTimeSignal;
 	simsignal_t delaysVisitedSignal;
 	simsignal_t generationSignal;
-    bool keepJobs;
+    bool keepCustomers;
 
   protected:
     virtual void initialize() override;

@@ -34,7 +34,7 @@ void Classifier::handleMessage(cMessage *msg)
 
     if(customer->getNumberOfItems() <= K){
         if(strcmp(policy, "equallylikely") == 0){
-            outGateIndex = uniform(0, quickTills);
+            outGateIndex = (int)uniform(0, quickTills);
         }
         else if(strcmp(policy, "jtsq") == 0){
             int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();
@@ -51,7 +51,7 @@ void Classifier::handleMessage(cMessage *msg)
     }
     else{
         if(strcmp(policy, "equallylikely") == 0){
-            outGateIndex = uniform(quickTills, C);
+            outGateIndex = (int)uniform(quickTills, C);
         }
         else if(strcmp(policy, "jtsq") == 0){
             int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();

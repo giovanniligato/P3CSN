@@ -63,6 +63,9 @@ void Queue::handleMessage(cMessage *msg)
         }
         else {
             // check for container capacity
+            //
+            // The condition inside this if is always false if the capacity
+            // of the queue is infinite (i.e. capacity = -1)
             if (capacity >= 0 && queue.getLength() >= capacity) {
                 EV << "Capacity full! Customer dropped.\n";
                 if (hasGUI())
@@ -111,12 +114,13 @@ void Queue::arrival(Customer *customer)
 simtime_t Queue::startService(Customer *customer)
 {
     // gather queueing time statistics
-    simtime_t d = simTime() - customer->getTimestamp();
+    simtime_t d = simTime() - customer->getTimestamp();     // Waiting Time (?)
     emit(queueingTimeSignal, d);
     customer->setTotalQueueingTime(customer->getTotalQueueingTime() + d);
     EV << "Starting service of " << customer->getName() << endl;
     customer->setTimestamp();
-    return par("serviceTime").doubleValue();
+
+    return customer->getNumberOfItems() * par("serviceTime").doubleValue();
 }
 
 void Queue::endService(Customer *customer)

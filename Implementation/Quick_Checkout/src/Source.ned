@@ -17,6 +17,7 @@ package quick_checkout;
 //
 simple Source
 {
+    
     parameters:
         @group(Queueing);
         @signal[created](type="long");

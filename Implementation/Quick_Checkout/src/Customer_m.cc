@@ -150,13 +150,15 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
+namespace queueing {
+
 Register_Class(Customer)
 
-Customer::Customer(const char *name, short kind) : ::omnetpp::cPacket(name, kind)
+Customer::Customer(const char *name, short kind) : ::omnetpp::cMessage(name, kind)
 {
 }
 
-Customer::Customer(const Customer& other) : ::omnetpp::cPacket(other)
+Customer::Customer(const Customer& other) : ::omnetpp::cMessage(other)
 {
     copy(other);
 }
@@ -168,26 +170,117 @@ Customer::~Customer()
 Customer& Customer::operator=(const Customer& other)
 {
     if (this == &other) return *this;
-    ::omnetpp::cPacket::operator=(other);
+    ::omnetpp::cMessage::operator=(other);
     copy(other);
     return *this;
 }
 
 void Customer::copy(const Customer& other)
 {
+    this->priority = other.priority;
+    this->totalQueueingTime = other.totalQueueingTime;
+    this->totalServiceTime = other.totalServiceTime;
+    this->totalDelayTime = other.totalDelayTime;
+    this->queueCount = other.queueCount;
+    this->delayCount = other.delayCount;
+    this->generation = other.generation;
     this->numberOfItems = other.numberOfItems;
 }
 
 void Customer::parsimPack(omnetpp::cCommBuffer *b) const
 {
-    ::omnetpp::cPacket::parsimPack(b);
+    ::omnetpp::cMessage::parsimPack(b);
+    doParsimPacking(b,this->priority);
+    doParsimPacking(b,this->totalQueueingTime);
+    doParsimPacking(b,this->totalServiceTime);
+    doParsimPacking(b,this->totalDelayTime);
+    doParsimPacking(b,this->queueCount);
+    doParsimPacking(b,this->delayCount);
+    doParsimPacking(b,this->generation);
     doParsimPacking(b,this->numberOfItems);
 }
 
 void Customer::parsimUnpack(omnetpp::cCommBuffer *b)
 {
-    ::omnetpp::cPacket::parsimUnpack(b);
+    ::omnetpp::cMessage::parsimUnpack(b);
+    doParsimUnpacking(b,this->priority);
+    doParsimUnpacking(b,this->totalQueueingTime);
+    doParsimUnpacking(b,this->totalServiceTime);
+    doParsimUnpacking(b,this->totalDelayTime);
+    doParsimUnpacking(b,this->queueCount);
+    doParsimUnpacking(b,this->delayCount);
+    doParsimUnpacking(b,this->generation);
     doParsimUnpacking(b,this->numberOfItems);
+}
+
+int Customer::getPriority() const
+{
+    return this->priority;
+}
+
+void Customer::setPriority(int priority)
+{
+    this->priority = priority;
+}
+
+::omnetpp::simtime_t Customer::getTotalQueueingTime() const
+{
+    return this->totalQueueingTime;
+}
+
+void Customer::setTotalQueueingTime(::omnetpp::simtime_t totalQueueingTime)
+{
+    this->totalQueueingTime = totalQueueingTime;
+}
+
+::omnetpp::simtime_t Customer::getTotalServiceTime() const
+{
+    return this->totalServiceTime;
+}
+
+void Customer::setTotalServiceTime(::omnetpp::simtime_t totalServiceTime)
+{
+    this->totalServiceTime = totalServiceTime;
+}
+
+::omnetpp::simtime_t Customer::getTotalDelayTime() const
+{
+    return this->totalDelayTime;
+}
+
+void Customer::setTotalDelayTime(::omnetpp::simtime_t totalDelayTime)
+{
+    this->totalDelayTime = totalDelayTime;
+}
+
+int Customer::getQueueCount() const
+{
+    return this->queueCount;
+}
+
+void Customer::setQueueCount(int queueCount)
+{
+    this->queueCount = queueCount;
+}
+
+int Customer::getDelayCount() const
+{
+    return this->delayCount;
+}
+
+void Customer::setDelayCount(int delayCount)
+{
+    this->delayCount = delayCount;
+}
+
+int Customer::getGeneration() const
+{
+    return this->generation;
+}
+
+void Customer::setGeneration(int generation)
+{
+    this->generation = generation;
 }
 
 int Customer::getNumberOfItems() const
@@ -205,6 +298,13 @@ class CustomerDescriptor : public omnetpp::cClassDescriptor
   private:
     mutable const char **propertyNames;
     enum FieldConstants {
+        FIELD_priority,
+        FIELD_totalQueueingTime,
+        FIELD_totalServiceTime,
+        FIELD_totalDelayTime,
+        FIELD_queueCount,
+        FIELD_delayCount,
+        FIELD_generation,
         FIELD_numberOfItems,
     };
   public:
@@ -237,7 +337,7 @@ class CustomerDescriptor : public omnetpp::cClassDescriptor
 
 Register_ClassDescriptor(CustomerDescriptor)
 
-CustomerDescriptor::CustomerDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(Customer)), "omnetpp::cPacket")
+CustomerDescriptor::CustomerDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(queueing::Customer)), "omnetpp::cMessage")
 {
     propertyNames = nullptr;
 }
@@ -272,7 +372,7 @@ const char *CustomerDescriptor::getProperty(const char *propertyName) const
 int CustomerDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
-    return base ? 1+base->getFieldCount() : 1;
+    return base ? 8+base->getFieldCount() : 8;
 }
 
 unsigned int CustomerDescriptor::getFieldTypeFlags(int field) const
@@ -284,9 +384,16 @@ unsigned int CustomerDescriptor::getFieldTypeFlags(int field) const
         field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
+        FD_ISEDITABLE,    // FIELD_priority
+        FD_ISEDITABLE,    // FIELD_totalQueueingTime
+        FD_ISEDITABLE,    // FIELD_totalServiceTime
+        FD_ISEDITABLE,    // FIELD_totalDelayTime
+        FD_ISEDITABLE,    // FIELD_queueCount
+        FD_ISEDITABLE,    // FIELD_delayCount
+        FD_ISEDITABLE,    // FIELD_generation
         FD_ISEDITABLE,    // FIELD_numberOfItems
     };
-    return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
+    return (field >= 0 && field < 8) ? fieldTypeFlags[field] : 0;
 }
 
 const char *CustomerDescriptor::getFieldName(int field) const
@@ -298,16 +405,30 @@ const char *CustomerDescriptor::getFieldName(int field) const
         field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
+        "priority",
+        "totalQueueingTime",
+        "totalServiceTime",
+        "totalDelayTime",
+        "queueCount",
+        "delayCount",
+        "generation",
         "numberOfItems",
     };
-    return (field >= 0 && field < 1) ? fieldNames[field] : nullptr;
+    return (field >= 0 && field < 8) ? fieldNames[field] : nullptr;
 }
 
 int CustomerDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
     int baseIndex = base ? base->getFieldCount() : 0;
-    if (strcmp(fieldName, "numberOfItems") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "priority") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "totalQueueingTime") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "totalServiceTime") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "totalDelayTime") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "queueCount") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "delayCount") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "generation") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "numberOfItems") == 0) return baseIndex + 7;
     return base ? base->findField(fieldName) : -1;
 }
 
@@ -320,9 +441,16 @@ const char *CustomerDescriptor::getFieldTypeString(int field) const
         field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
+        "int",    // FIELD_priority
+        "omnetpp::simtime_t",    // FIELD_totalQueueingTime
+        "omnetpp::simtime_t",    // FIELD_totalServiceTime
+        "omnetpp::simtime_t",    // FIELD_totalDelayTime
+        "int",    // FIELD_queueCount
+        "int",    // FIELD_delayCount
+        "int",    // FIELD_generation
         "int",    // FIELD_numberOfItems
     };
-    return (field >= 0 && field < 1) ? fieldTypeStrings[field] : nullptr;
+    return (field >= 0 && field < 8) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **CustomerDescriptor::getFieldPropertyNames(int field) const
@@ -405,6 +533,13 @@ std::string CustomerDescriptor::getFieldValueAsString(omnetpp::any_ptr object, i
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
+        case FIELD_priority: return long2string(pp->getPriority());
+        case FIELD_totalQueueingTime: return simtime2string(pp->getTotalQueueingTime());
+        case FIELD_totalServiceTime: return simtime2string(pp->getTotalServiceTime());
+        case FIELD_totalDelayTime: return simtime2string(pp->getTotalDelayTime());
+        case FIELD_queueCount: return long2string(pp->getQueueCount());
+        case FIELD_delayCount: return long2string(pp->getDelayCount());
+        case FIELD_generation: return long2string(pp->getGeneration());
         case FIELD_numberOfItems: return long2string(pp->getNumberOfItems());
         default: return "";
     }
@@ -422,6 +557,13 @@ void CustomerDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int fiel
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
+        case FIELD_priority: pp->setPriority(string2long(value)); break;
+        case FIELD_totalQueueingTime: pp->setTotalQueueingTime(string2simtime(value)); break;
+        case FIELD_totalServiceTime: pp->setTotalServiceTime(string2simtime(value)); break;
+        case FIELD_totalDelayTime: pp->setTotalDelayTime(string2simtime(value)); break;
+        case FIELD_queueCount: pp->setQueueCount(string2long(value)); break;
+        case FIELD_delayCount: pp->setDelayCount(string2long(value)); break;
+        case FIELD_generation: pp->setGeneration(string2long(value)); break;
         case FIELD_numberOfItems: pp->setNumberOfItems(string2long(value)); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Customer'", field);
     }
@@ -437,6 +579,13 @@ omnetpp::cValue CustomerDescriptor::getFieldValue(omnetpp::any_ptr object, int f
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
+        case FIELD_priority: return pp->getPriority();
+        case FIELD_totalQueueingTime: return pp->getTotalQueueingTime().dbl();
+        case FIELD_totalServiceTime: return pp->getTotalServiceTime().dbl();
+        case FIELD_totalDelayTime: return pp->getTotalDelayTime().dbl();
+        case FIELD_queueCount: return pp->getQueueCount();
+        case FIELD_delayCount: return pp->getDelayCount();
+        case FIELD_generation: return pp->getGeneration();
         case FIELD_numberOfItems: return pp->getNumberOfItems();
         default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Customer' as cValue -- field index out of range?", field);
     }
@@ -454,6 +603,13 @@ void CustomerDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i
     }
     Customer *pp = omnetpp::fromAnyPtr<Customer>(object); (void)pp;
     switch (field) {
+        case FIELD_priority: pp->setPriority(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_totalQueueingTime: pp->setTotalQueueingTime(value.doubleValue()); break;
+        case FIELD_totalServiceTime: pp->setTotalServiceTime(value.doubleValue()); break;
+        case FIELD_totalDelayTime: pp->setTotalDelayTime(value.doubleValue()); break;
+        case FIELD_queueCount: pp->setQueueCount(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_delayCount: pp->setDelayCount(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_generation: pp->setGeneration(omnetpp::checked_int_cast<int>(value.intValue())); break;
         case FIELD_numberOfItems: pp->setNumberOfItems(omnetpp::checked_int_cast<int>(value.intValue())); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Customer'", field);
     }
@@ -501,6 +657,8 @@ void CustomerDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Customer'", field);
     }
 }
+
+}  // namespace queueing
 
 namespace omnetpp {
 

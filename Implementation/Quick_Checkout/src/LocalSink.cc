@@ -7,14 +7,14 @@
 // `license' for details on this and other legal matters.
 //
 
-#include "Sink.h"
-#include "Job.h"
+#include "LocalSink.h"
+#include "Customer_m.h"
 
 namespace queueing {
 
-Define_Module(Sink);
+Define_Module(LocalSink);
 
-void Sink::initialize()
+void LocalSink::initialize()
 {
     lifeTimeSignal = registerSignal("lifeTime");
     totalQueueingTimeSignal = registerSignal("totalQueueingTime");
@@ -23,27 +23,29 @@ void Sink::initialize()
     totalDelayTimeSignal = registerSignal("totalDelayTime");
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
-    keepJobs = par("keepJobs");
+    keepCustomers = par("keepCustomers");
 }
 
-void Sink::handleMessage(cMessage *msg)
+void LocalSink::handleMessage(cMessage *msg)
 {
-    Job *job = check_and_cast<Job *>(msg);
+    Customer *customer = check_and_cast<Customer *>(msg);
 
     // gather statistics
-    emit(lifeTimeSignal, simTime()- job->getCreationTime());
-    emit(totalQueueingTimeSignal, job->getTotalQueueingTime());
-    emit(queuesVisitedSignal, job->getQueueCount());
-    emit(totalServiceTimeSignal, job->getTotalServiceTime());
-    emit(totalDelayTimeSignal, job->getTotalDelayTime());
-    emit(delaysVisitedSignal, job->getDelayCount());
-    emit(generationSignal, job->getGeneration());
+    emit(lifeTimeSignal, simTime() - customer->getCreationTime());
+    emit(totalQueueingTimeSignal, customer->getTotalQueueingTime());
+    emit(queuesVisitedSignal, customer->getQueueCount());
+    emit(totalServiceTimeSignal, customer->getTotalServiceTime());
+    emit(totalDelayTimeSignal, customer->getTotalDelayTime());
+    emit(delaysVisitedSignal, customer->getDelayCount());
+    emit(generationSignal, customer->getGeneration());
 
-    if (!keepJobs)
+    // send(customer, "out");
+    if (!keepCustomers)
         delete msg;
+
 }
 
-void Sink::finish()
+void LocalSink::finish()
 {
     // TODO missing scalar statistics
 }
