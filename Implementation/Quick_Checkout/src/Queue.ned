@@ -12,6 +12,10 @@ package quick_checkout;
 //
 // A queue with a built-in server
 //
+
+@namespace(queueing);
+
+
 simple Queue
 {
     parameters:
@@ -28,7 +32,7 @@ simple Queue
 
         int capacity = default(-1);    // negative capacity means unlimited queue
         bool fifo = default(true);     // whether the module works as a queue (fifo=true) or a stack (fifo=false)
-        volatile double serviceTime @unit(s);
+        volatile double serviceTime @unit(s) = default(3s);
 		
     gates:
         input in;

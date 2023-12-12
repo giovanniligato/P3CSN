@@ -1,0 +1,99 @@
+version 3
+run General-0-20231212-13:09:08-16676
+attr configname General
+attr datetime 20231212-13:09:08
+attr datetimef 20231212-130908
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network SuperMarket
+attr processid 16676
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config network SuperMarket
+config sim-time-limit "60s * 60 * 12"
+config **.Checkout.C 10
+config **.Checkout.p 0.5
+config **.Classifier.K 5
+config **.Queue.serviceTime 3s
+config *.Source.interArrivalTime exponential(10s)
+config *.Source.numberOfItems exponential(15)
+
+vector 0 SuperMarket.checkout.queues[0] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 1 SuperMarket.checkout.queues[1] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 2 SuperMarket.checkout.queues[2] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 3 SuperMarket.checkout.queues[3] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 4 SuperMarket.checkout.queues[4] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 5 SuperMarket.checkout.queues[5] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 6 SuperMarket.checkout.queues[6] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 7 SuperMarket.checkout.queues[7] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 8 SuperMarket.checkout.queues[8] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 9 SuperMarket.checkout.queues[9] queueLength:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr title "queue length"
+vector 10 SuperMarket.checkout.localSink[2] lifeTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "lifetime of arrived jobs"
+attr unit s
+vector 11 SuperMarket.checkout.localSink[3] lifeTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "lifetime of arrived jobs"
+attr unit s
+vector 12 SuperMarket.checkout.localSink[4] lifeTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr title "lifetime of arrived jobs"
+attr unit s
+0	0	0	0
+1	0	0	0
+2	0	0	0
+3	0	0	0
+4	0	0	0
+5	0	0	0
+6	0	0	0
+7	0	0	0
+8	0	0	0
+9	0	0	0
+10	5	8	3
+10	10	13	3
+11	15	18	3
+11	25	28	3
+12	20	23	3
+12	30	33	3
+

@@ -18,6 +18,8 @@ import quick_checkout.LocalSink;
 import quick_checkout.Queue;
 import quick_checkout.Classifier;
 
+@namespace(queueing);
+
 module Checkout
 {
     parameters:
@@ -28,7 +30,7 @@ module Checkout
 
     gates:
         input in;
-        output out;
+        // output out;
 
     submodules:
         classifier: Classifier {
@@ -45,7 +47,7 @@ module Checkout
         for i=0..C-1 {
             classifier.out++ --> queues[i].in;
             queues[i].out --> localSink[i].in;
-            localSink[i].out --> out;
+            // localSink[i].out --> out;
         }
 
 

@@ -17,6 +17,9 @@ package quick_checkout;
 //
 // @author rhornig
 //
+
+@namespace(queueing);
+
 simple Classifier
 {
     parameters:

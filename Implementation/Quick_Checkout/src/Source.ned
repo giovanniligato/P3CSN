@@ -15,6 +15,8 @@ package quick_checkout;
 // customer generation stops when the number of customers or the end time has been reached,
 // whichever occurs first. The name, type and priority of customers can be set as well.
 //
+@namespace(queueing);
+
 simple Source
 {
     

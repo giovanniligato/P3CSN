@@ -12,6 +12,9 @@ package quick_checkout;
 //
 // Destroys (or optionally keep) the packets and collects statistics
 //
+
+@namespace(queueing);
+
 simple LocalSink
 {
     parameters:
@@ -35,7 +38,7 @@ simple LocalSink
     
     gates:
         input in;
-        output out;
+        //output out;
         
 }
 

@@ -23,7 +23,7 @@ class QUEUEING_API Classifier : public cSimpleModule
         const char *policy;   // The policy we are using 
         int K;
         int C;
-        int p;
+        double p;
 
     protected:
         virtual void initialize() override;
