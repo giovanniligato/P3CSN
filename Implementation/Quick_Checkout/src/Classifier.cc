@@ -9,6 +9,7 @@
 
 #include "Classifier.h"
 #include "Customer_m.h"
+#include "Queue.h"
 #include <math.h>
 
 namespace queueing {
@@ -37,10 +38,15 @@ void Classifier::handleMessage(cMessage *msg)
             outGateIndex = (int)uniform(0, quickTills);
         }
         else if(strcmp(policy, "jtsq") == 0){
-            int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();
+            int minQueueIndex = 0;
+            int minQueueLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", 0)))->length();
+            int tempLength = -1;
+            EV<<"ECCO::: "<<minQueueLength<<endl;
             for(int i=1; i<quickTills; i++){
-                if((check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", i)))->getLength() < minQueueIndex){
+                tempLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", i)))->length();
+                if(tempLength < minQueueLength){
                     minQueueIndex = i;
+                    minQueueLength = tempLength;
                 }
             }
             // In the case of two queues having the same length, the first one is chosen
@@ -54,10 +60,14 @@ void Classifier::handleMessage(cMessage *msg)
             outGateIndex = (int)uniform(quickTills, C);
         }
         else if(strcmp(policy, "jtsq") == 0){
-            int minQueueIndex = (check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", 0)))->getLength();
+            int minQueueIndex = quickTills;
+            int minQueueLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", quickTills)))->length();
+            int tempLength = -1;
             for(int i=quickTills+1; i<C; i++){
-                if((check_and_cast<cQueue*>(getParentModule()->getSubmodule("queues", i)))->getLength() < minQueueIndex){
+                tempLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", i)))->length();
+                if(tempLength < minQueueLength){
                     minQueueIndex = i;
+                    minQueueLength = tempLength;
                 }
             }
             // In the case of two queues having the same length, the first one is chosen

@@ -14,6 +14,7 @@
 // 
 
 package quick_checkout;
+
 import quick_checkout.LocalSink;
 import quick_checkout.Queue;
 import quick_checkout.Classifier;
@@ -23,7 +24,7 @@ import quick_checkout.Classifier;
 module Checkout
 {
     parameters:
-        int C = default(10);
+        int C = default(6);
         double p = default(0.5);
 
         @display("bgb=622,373");
@@ -37,10 +38,10 @@ module Checkout
             @display("p=80,184");
         }
         queues[C]: Queue {
-            @display("p=287,184");
+            @display("p=282,184,m,1,50,50");
         }
         localSink[C]: LocalSink {
-            @display("p=528,184");
+            @display("p=516,184,m,1,50,50");
         }
     connections:
         in --> classifier.in;
