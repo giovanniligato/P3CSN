@@ -21,7 +21,7 @@ void Classifier::initialize()
     policy = par("policy");
 
     K=par("K");
-    C=getParentModule()->par("C");
+    C=getParentModule()->getParentModule()->par("C");
     p=getParentModule()->par("p");
 
 }
@@ -41,7 +41,6 @@ void Classifier::handleMessage(cMessage *msg)
             int minQueueIndex = 0;
             int minQueueLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", 0)))->length();
             int tempLength = -1;
-            EV<<"ECCO::: "<<minQueueLength<<endl;
             for(int i=1; i<quickTills; i++){
                 tempLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", i)))->length();
                 if(tempLength < minQueueLength){

@@ -27,7 +27,6 @@ class QUEUEING_API LocalSink : public cSimpleModule
 	simsignal_t totalDelayTimeSignal;
 	simsignal_t delaysVisitedSignal;
 	simsignal_t generationSignal;
-    bool keepCustomers;
 
   protected:
     virtual void initialize() override;

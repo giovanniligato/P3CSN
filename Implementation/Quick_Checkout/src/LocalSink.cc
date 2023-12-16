@@ -23,7 +23,6 @@ void LocalSink::initialize()
     totalDelayTimeSignal = registerSignal("totalDelayTime");
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
-    keepCustomers = par("keepCustomers");
 }
 
 void LocalSink::handleMessage(cMessage *msg)
@@ -39,9 +38,7 @@ void LocalSink::handleMessage(cMessage *msg)
     emit(delaysVisitedSignal, customer->getDelayCount());
     emit(generationSignal, customer->getGeneration());
 
-    // send(customer, "out");
-    if (!keepCustomers)
-        delete msg;
+    send(customer, "out");
 
 }
 

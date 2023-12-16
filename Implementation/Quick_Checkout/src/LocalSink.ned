@@ -34,11 +34,10 @@ simple LocalSink
         @statistic[queuesVisited](title="the total number of queues visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[delaysVisited](title="the total number of delays visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[generation](title="the generation of the arrived jobs";record=vector?,mean,max;interpolationmode=none);
-        bool keepCustomers = default(false); // whether to keep the received jobs till the end of simulation
     
     gates:
         input in;
-        //output out;
+        output out;
         
 }
 

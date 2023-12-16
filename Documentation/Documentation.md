@@ -110,9 +110,10 @@ To implement the theoretical model we will consider the following modules:
 - **LoadBalancer**: represents the load balancer that routes the customers to the two subsystems.
 
 
-
-
 ## Verification of the Implemented Simulation Model
+
+
+
 
 ## Factors Calibration
 

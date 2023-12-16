@@ -1,4 +1,4 @@
-//
+	//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -24,31 +24,31 @@ import quick_checkout.Classifier;
 module Checkout
 {
     parameters:
-        int C = default(6);
         double p = default(0.5);
 
         @display("bgb=622,373");
 
     gates:
         input in;
-        // output out;
+        output out[];
 
     submodules:
         classifier: Classifier {
             @display("p=80,184");
         }
-        queues[C]: Queue {
-            @display("p=282,184,m,1,50,50");
+        queues[parent.C]: Queue {
+            @display("p=282,184,m,1,45,45");
         }
-        localSink[C]: LocalSink {
-            @display("p=516,184,m,1,50,50");
+        localSink[parent.C]: LocalSink {
+            @display("p=516,184,m,1,45,45");
         }
+        
     connections:
         in --> classifier.in;
-        for i=0..C-1 {
+        for i=0..parent.C-1 {
             classifier.out++ --> queues[i].in;
             queues[i].out --> localSink[i].in;
-            // localSink[i].out --> out;
+            localSink[i].out --> out++;
         }
 
 
