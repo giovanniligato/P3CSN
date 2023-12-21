@@ -59,6 +59,10 @@ $$\left\{\begin{matrix}
 \end{matrix}\right.$$
 
 
+Bisogna scrivere anche che ci si mette in coda nella coda con meno persone ma non si conta se in una coda ci sono 0 persone e qualcuno viene servito. Dunque una coda con 0 persone e con qualcuno in fase di pagamento viene vista allo stesso modo di una coda con 0 persone e nessuno in fase di pagamento.
+In più nel nostro modello le persone con pochi oggetti possono andare solo nelle code veloci e NON in quelle con molti oggetti...! Aggiungere queste osservazioni nelle assumptions.
+
+
 
 ## Validation
 AKA Common Sense Validation:
@@ -115,6 +119,189 @@ To implement the theoretical model we will consider the following modules:
 
 
 
+
+Aggiungendo 1 come cambia il Service time? Peggiora di molto? E se condizioni stabilità si modificano?
+
+If you add a constant \( c \) to each observation, the mean of the new distribution will be the sum of the original mean and the constant:
+
+\[ \text{New Mean} = \text{Original Mean} + c \]
+
+In general, adding a constant to every observation of a random variable increases the mean by that constant.
+
+
+### Consistency Test
+The consistency test that we performed is the following: we halved both the inter-arrival time ($T$) and the mean number of items in a customer's cart ($M$) and we saw that the waiting time in each queue was halved too (maybe in the plot we could show the behaviour of only one queue, or as another possibility we could plot the behaviour of the overall system but i don't know if doing so the behaviour in the different configurations is the same). The distributions used for the inter-arrival time and the number of items in a customer's cart were both exponential. To support this test we have also performed some theoretical considerations. In our system the service time of each till is given by $S = M\cdot 3s$. So, when we halve the mean number of items in a customer's cart, the service time is halved too. At this point it remains to show that in M/M/1 the waiting time is halved when both the inter-arrival time and the service time are halved (or if you prefer when the inter-arrival rate and the service rate are doubled). We do this in the following example.
+
+Let $T$ and $S$ be the inter-arrival time and the service time of an M/M/1, respectively:
+
+- $T = \frac{1}{2}$
+
+- $S = \frac{1}{4}$
+
+Taking their reciprocals we obtain the arrival rate $t$ and the service rate $s$:
+
+- $t = \frac{1}{T} = 2$
+
+- $s = \frac{1}{S} = 4$
+
+```
+         -----
+t=2 ----      | --> O
+         -----    s=4
+```
+
+The performance indexes in this case are the following:
+
+- $\rho = \frac{t}{m} = \frac{2}{4} = \frac{1}{2}$
+
+- $E[N] = \frac{\rho}{1-\rho} = \frac{ \frac{1}{2} }{ 1-\frac{1}{2} } = 1$
+
+<!--$$E[R] = \frac{E[N]}{t} = \frac{1}{2}$$-->
+
+- $E[N_q] = E[N] - \rho = 1 - \frac{1}{2} = \frac{1}{2}$
+
+- $E[W] = \frac{E[N_q]}{t} = \frac{ \frac{1}{2} }{2} = \frac{1}{4}$
+
+Now by halving the inter-arrival time and the service time we obtain:
+
+- $T' = \frac{T}{2} = \frac{1}{4}$
+
+- $S' = \frac{S}{2} = \frac{1}{8}$
+
+This translates into doubling the arrival rate and the service rate:
+
+- $t' = 2\cdot t = 4$
+
+- $s' = 2\cdot s = 8$
+
+```
+          -----
+t'=4 ----      | --> O 
+          -----   s'=8
+```
+
+Now the performance indexes are the following:
+
+- $\rho' = \frac{t'}{m'} = \frac{4}{8} = \frac{1}{2}$
+
+- $E[N]' = \frac{\rho'}{1-\rho'} = \frac{ \frac{1}{2} }{ 1-\frac{1}{2} } = 1$
+
+<!-- - $E[R]' = \frac{E[N]'}{t'} = \frac{1}{4}$-->
+
+- $E[N_q]' = E[N]' - \rho' = 1 - \frac{1}{2} = \frac{1}{2}$
+
+- $E[W]' = \frac{E[N_q]'}{t'} = \frac{ \frac{1}{2} }{4} = \frac{1}{8} = \frac{E[W]}{2}$
+
+We can clearly see that here the waiting time is halved.
+
+After this considerations we proceeded in the following way.
+
+We could try from the beginning with n = 100...
+
+(1) We set n = 40 (i.e. number of repetitions) and we tried different configurations of T, M and K, where in all of them we set K to be the 30% of M. With this latter precaution we are sure that the same percentage of customers will be routed to the quick-checkout tills in all the configurations. The configurations that we chose are the following:
+
+- Slow Behaviour Experiment:
+  - T = 60
+  - M = 40
+  - K = 16
+
+- Balanced Behaviour Experiment:
+  - T = 30
+  - M = 20 
+  - K = 8
+
+- Fast Behaviour Experiment:
+  - T = 15  
+  - M = 10
+  - K = 4
+
+Every simulation was run for 24 hours (sim-time). 
+
+To review the following observations because they are not really clear...
+
+(2) Analyzing the results we saw that in the Fast Behaviour Experiment, for the queue of index 1...
+
+(2) We used the results related to the queues[1] of the Fast Behaviour Experiment because we saw that this particular queue for this particular configuration had the worst results in terms of waiting time (in the sense that the waiting time was the lowest among the different queues of the different configurations because in the fast configuration there were a lot of situations where customers didn't pass from this queue because the shortest queue was often the queue with index 0 because at most M was equal to 4 if we were in this subsystem). We obtained that $\bar{X} = 0.329617$ and $S = 0.233714$. Putting this number into the formula for the number of samples we obtain:
+
+$$n = \left(\frac{z_{0.05}\cdot S}{r\cdot \bar{X} } \right)^2 = 772.54$$ 
+
+Where $r = 0.05$. For this reason we considered n = 800 as the number of samples to be used for the simulation. At this point we run again the simulation for 24 hours (sim-time) and we obtained that (for queue[1] Fast configuration) $\bar{X} = 0.294218$ and $S = 0.246594$. That are not much different from the previous values. 
+
+Now can show the plot that we have obtained for the different queues among the different configurations. Here we can see the behaviour that we proved before in the mathematical considerations.
+
+<!-- ![Plot of the different queues](Resources/Plot.png) -->
+
+
+## Degeneracy Test(s)
+
+Here we propose different tests to assess the behaviour of the system in borderline cases. In all the tests we will consider the following parameters:
+M = 20 
+T = 30
+C = 4
+(balanced configuration)
+Both Exponential
+
+In all these tests we will consider the Mean number of customers in queue.
+
+
+1. K = 0 (i.e. unused quick-checkout tills)
+p = 0.5
+Running 100 simulations we saw that in both queues[0] and queues[1] (i.e. quick-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had more than K items in their cart and so they were routed to the normal-checkout tills.
+
+
+2. K = 1000 (negligible probability of being served in a normal-checkout till).
+p = 0.5
+Again, running 100 simulations we saw that in both queues[2] and queues[3] (i.e. normal-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had less than K items in their cart and so they were routed to the quick-checkout tills.
+
+
+3. p = 0 (i.e. no quick-checkout tills)
+
+K = NA (not applicable) NO!!! K = 0 sennò va tutto in coda 0!!!!
+
+FARE PROVA CON K = 1000 e vedere se va tutto in coda 0!!!
+
+Problema risolto perché int(exp) mi fa generare roba con 0 oggetti e quindi va tutto in coda 0!!! (vedi codice classifier) provare a risolvere questo problema con ceil per non modificare mean value dell'exp sennò aggiungendo 1 si modifica la media e quindi bisognerebbe sottrarre 1 alla media per non modificare il valore medio della distribuzione.
+
+
+[[Here will have Nq less than case 1. because we will have 2 more normal-checkout tills (C is fixed to be equal to 4 in both cases).]]
+100 simulations.
+In this case as we could imagine, the mean number of customers in queus is lower (really low and below 1 indeed) and if compared with the case 1 (K=0 and p=0.5) we have that the mean number of customers in every queue of this configuration is lower than the mean number of customers in the two queues of the previous configuration. This is because in this case we have 4 normal-checkout tills instead of 2 normal-checkout tills and 2 quick-checkout tills that were unused. So we have more tills and so the mean number of customers in queue is lower.
+
+
+4. p = 1 (i.e. only quick-checkout tills)
+K = 1000 (negligible probability of being served in a normal-checkout till) because otherwise we will have an error thrown when the classifier tries to route a customer to a normal-checkout till. In this situation compared to the 2nd case we will have an analogous behaviour as the one described in the previous case. If instead we compare this situation with the 3rd case we will have an equal behaviour because in both cases we have only 4 tills. Note that the service time by a quick-checkout till and a normal-checkout till is the same. And by not having different type of tills we will have the exactly the same behaviour.
+
+
+Sistemare commenti su!
+
+## Continuity Test
+Here we consider the base configuration (i.e. again the balanced configuration) and we try to see how the system behaves when we slightly change T.
+Base configuration:
+  - T = 30
+  - M = 20 
+  - K = 8
+  - C = 4
+
+By slightly increasing T we expect to see the Total Queueing time as seen by the global sink, decreasing. This is because by increasing T we will have less customers in the system and so the Total Queueing time will decrease.
+We try this by increasing T by 1. The last configuration will be when T = 35.
+For each configuration we run 50 simulations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Factors Calibration
 
 ## Experiments Design
@@ -139,7 +326,6 @@ To implement the theoretical model we will consider the following modules:
 - K **ask to Prof. Nardini if it is a Factor instead, because the text it isn't clear enough**.
 
 
-
 ## Osservazioni ITA
 La lognormale essendo solo positiva si presta a quelle cose che valgono solo per distribuzioni positive.
 
@@ -147,4 +333,55 @@ Quando andremo a vedere il load balancing dinamico ci potrà tornare utile per l
 Avremo in ingresso a ciascun sottosistema un certo inter-arrival time funzione di T, K e tipo di distribuzione che ha T.
 
 Classifier in Omnet++ per nodo probabilistico.
+
+
+M/M/1
+
+
+$$\rho < 1$$
+$$\rho = \frac{\lambda}{\mu}$$
+$$\lambda < \mu$$
+
+$$\lambda < \frac{1}{S}$$
+
+$$\frac{1}{\lambda} > S$$
+
+$$S < \frac{1}{\lambda}$$
+
+$$M \cdot 3s < \frac{1}{\lambda}$$
+
+$$M < \frac{1}{\lambda} \cdot \frac{1}{3s}$$
+
+$$M < \frac{T}{3s}$$
+
+$$T > 3s\cdot M$$
+
+
+Rate in ingresso a ciascun SC:
+Per soddisfare la condizione di stabilità del sistema, tutti i singoli SC devono essere stabili. In questo caso basta che la condizione sia soddisfatta per una qualsiasi cassa normale, e di conseguenza tutte le altre saranno stabili.
+
+$$\pi_j = \frac{(1-\alpha)}{C\cdot (1-p)}$$
+$$\pi_j = \frac{(1-0.33)}{4\cdot (1-0.5)}$$
+$$\pi_j = \frac{0.67}{4\cdot 0.5}$$
+$$\pi_j = \frac{0.67}{2}$$
+$$\pi_j = 0.335$$
+
+$$\lambda_j = \lambda \cdot \pi_j$$
+$$\lambda = \frac{1}{T}$$
+$$\lambda_j = \frac{1}{T_j}$$
+$$\frac{1}{T_j} = \frac{1}{T} \cdot \pi_j$$
+$$T_j = \frac{T}{\pi_j}$$
+
+$$T_j > 3s\cdot M$$
+$$\frac{T}{\pi_j} > 3s\cdot M$$
+$$T > 3s\cdot M \cdot \pi_j$$
+
+p = 0.5
+M = 40
+C = 4
+alfa = 0.33
+
+$$T > 3\cdot 40 \cdot 0.335 = 40.2$$
+
+
 

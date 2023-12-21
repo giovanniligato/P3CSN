@@ -1,8 +1,8 @@
 version 3
-run General-0-20231216-18:00:47-13788
+run General-0-20231220-17:25:36-17912
 attr configname General
-attr datetime 20231216-18:00:47
-attr datetimef 20231216-180047
+attr datetime 20231220-17:25:36
+attr datetimef 20231220-172536
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
@@ -10,37 +10,42 @@ attr iterationvarsd ""
 attr iterationvarsf ""
 attr measurement ""
 attr network SuperMarket
-attr processid 13788
+attr processid 17912
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 config network SuperMarket
-config sim-time-limit "60s * 60 * 60 * 12"
+config sim-time-limit "60s * 60 * 24"
+config repeat 1
+config seed-set 0
 config SuperMarket.C 4
-config SuperMarket.checkout.p 0.5
-config SuperMarket.checkout.classifier.K 50
+config SuperMarket.checkout.p 0
+config SuperMarket.checkout.classifier.K 0
 config SuperMarket.checkout.queues.serviceTime 3s
-config SuperMarket.source.interArrivalTime exponential(10s)
-config SuperMarket.source.numberOfItems int(exponential(50))
+config num-rngs 2
+config SuperMarket.source.rng-0 0
+config SuperMarket.source.rng-1 1
+config SuperMarket.source.interArrivalTime "exponential(30s, 0)"
+config SuperMarket.source.numberOfItems "int(exponential(19, 1)+1)"
 config SuperMarket.checkout.classifier.policy "\"jtsq\""
 
 par SuperMarket.source typename "\"quick_checkout.Source\""
 par SuperMarket.source numCustomers -1
-par SuperMarket.source interArrivalTime exponential(10s)
+par SuperMarket.source interArrivalTime "exponential(30s, 0)"
 attr unit s
-par SuperMarket.source numberOfItems int(exponential(50))
-par SuperMarket.source startTime 7.95875s
+par SuperMarket.source numberOfItems "int(exponential(19, 1)+1)"
+par SuperMarket.source startTime 23.8762s
 attr unit s
 par SuperMarket.source stopTime -1s
 attr unit s
-scalar SuperMarket.source created:last 259595
+scalar SuperMarket.source created:last 2821
 attr interpolationmode none
 attr recordingmode last
 attr title "the number of customers created, last"
 par SuperMarket.checkout.classifier typename "\"quick_checkout.Classifier\""
-par SuperMarket.checkout.classifier K 50
+par SuperMarket.checkout.classifier K 0
 par SuperMarket.checkout.classifier policy "\"jtsq\""
 attr enum equallylikely,jtsq
 par SuperMarket.checkout.queues[0] typename "\"quick_checkout.Queue\""
@@ -48,25 +53,25 @@ par SuperMarket.checkout.queues[0] capacity -1
 par SuperMarket.checkout.queues[0] fifo true
 par SuperMarket.checkout.queues[0] serviceTime 3s
 attr unit s
-scalar SuperMarket.checkout.queues[0] busy:timeavg 0.99999346282834
+scalar SuperMarket.checkout.queues[0] busy:timeavg 0.85029411497931
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "server busy state, timeavg"
-scalar SuperMarket.checkout.queues[0] queueingTime:mean 649187.31057804
+scalar SuperMarket.checkout.queues[0] queueingTime:mean 38.794921226966
 attr interpolationmode none
 attr recordingmode mean
 attr title "queueing time at dequeue, mean"
 attr unit s
-scalar SuperMarket.checkout.queues[0] queueingTime:max 1285655.1848533
+scalar SuperMarket.checkout.queues[0] queueingTime:max 333.55782796911
 attr interpolationmode none
 attr recordingmode max
 attr title "queueing time at dequeue, max"
 attr unit s
-scalar SuperMarket.checkout.queues[0] queueLength:timeavg 20617.060282698
+scalar SuperMarket.checkout.queues[0] queueLength:timeavg 0.56729498365194
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "queue length, timeavg"
-scalar SuperMarket.checkout.queues[0] queueLength:max 41200
+scalar SuperMarket.checkout.queues[0] queueLength:max 2
 attr interpolationmode sample-hold
 attr recordingmode max
 attr title "queue length, max"
@@ -79,25 +84,25 @@ par SuperMarket.checkout.queues[1] capacity -1
 par SuperMarket.checkout.queues[1] fifo true
 par SuperMarket.checkout.queues[1] serviceTime 3s
 attr unit s
-scalar SuperMarket.checkout.queues[1] busy:timeavg 0.99997875931929
+scalar SuperMarket.checkout.queues[1] busy:timeavg 0.62159722222222
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "server busy state, timeavg"
-scalar SuperMarket.checkout.queues[1] queueingTime:mean 645635.6608338
+scalar SuperMarket.checkout.queues[1] queueingTime:mean 31.690479399589
 attr interpolationmode none
 attr recordingmode mean
 attr title "queueing time at dequeue, mean"
 attr unit s
-scalar SuperMarket.checkout.queues[1] queueingTime:max 1290718.3803653
+scalar SuperMarket.checkout.queues[1] queueingTime:max 382.46854539989
 attr interpolationmode none
 attr recordingmode max
 attr title "queueing time at dequeue, max"
 attr unit s
-scalar SuperMarket.checkout.queues[1] queueLength:timeavg 20616.557124702
+scalar SuperMarket.checkout.queues[1] queueLength:timeavg 0.34478067865293
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "queue length, timeavg"
-scalar SuperMarket.checkout.queues[1] queueLength:max 41200
+scalar SuperMarket.checkout.queues[1] queueLength:max 2
 attr interpolationmode sample-hold
 attr recordingmode max
 attr title "queue length, max"
@@ -110,25 +115,25 @@ par SuperMarket.checkout.queues[2] capacity -1
 par SuperMarket.checkout.queues[2] fifo true
 par SuperMarket.checkout.queues[2] serviceTime 3s
 attr unit s
-scalar SuperMarket.checkout.queues[2] busy:timeavg 0.99999692949651
+scalar SuperMarket.checkout.queues[2] busy:timeavg 0.31213440490886
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "server busy state, timeavg"
-scalar SuperMarket.checkout.queues[2] queueingTime:mean 1056584.7802825
+scalar SuperMarket.checkout.queues[2] queueingTime:mean 25.75027580136
 attr interpolationmode none
 attr recordingmode mean
 attr title "queueing time at dequeue, mean"
 attr unit s
-scalar SuperMarket.checkout.queues[2] queueingTime:max 2112797.2949207
+scalar SuperMarket.checkout.queues[2] queueingTime:max 332.5715916415
 attr interpolationmode none
 attr recordingmode max
 attr title "queueing time at dequeue, max"
 attr unit s
-scalar SuperMarket.checkout.queues[2] queueLength:timeavg 19151.67965549
+scalar SuperMarket.checkout.queues[2] queueLength:timeavg 0.14081226924339
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "queue length, timeavg"
-scalar SuperMarket.checkout.queues[2] queueLength:max 38288
+scalar SuperMarket.checkout.queues[2] queueLength:max 2
 attr interpolationmode sample-hold
 attr recordingmode max
 attr title "queue length, max"
@@ -141,25 +146,25 @@ par SuperMarket.checkout.queues[3] capacity -1
 par SuperMarket.checkout.queues[3] fifo true
 par SuperMarket.checkout.queues[3] serviceTime 3s
 attr unit s
-scalar SuperMarket.checkout.queues[3] busy:timeavg 0.99996586927822
+scalar SuperMarket.checkout.queues[3] busy:timeavg 0.10361111111111
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "server busy state, timeavg"
-scalar SuperMarket.checkout.queues[3] queueingTime:mean 1060735.0069254
+scalar SuperMarket.checkout.queues[3] queueingTime:mean 17.558002329005
 attr interpolationmode none
 attr recordingmode mean
 attr title "queueing time at dequeue, mean"
 attr unit s
-scalar SuperMarket.checkout.queues[3] queueingTime:max 2114818.9411893
+scalar SuperMarket.checkout.queues[3] queueingTime:max 232.39070674039
 attr interpolationmode none
 attr recordingmode max
 attr title "queueing time at dequeue, max"
 attr unit s
-scalar SuperMarket.checkout.queues[3] queueLength:timeavg 19151.178761285
+scalar SuperMarket.checkout.queues[3] queueLength:timeavg 0.030889078171398
 attr interpolationmode sample-hold
 attr recordingmode timeavg
 attr title "queue length, timeavg"
-scalar SuperMarket.checkout.queues[3] queueLength:max 38287
+scalar SuperMarket.checkout.queues[3] queueLength:max 2
 attr interpolationmode sample-hold
 attr recordingmode max
 attr title "queue length, max"
@@ -184,7 +189,7 @@ scalar SuperMarket.checkout.localSink[0] delaysVisited:max 0
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of delays visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[0] queuesVisited:mean 0.99997601630891
+scalar SuperMarket.checkout.localSink[0] queuesVisited:mean 0.67223548130469
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total number of queues visited by arrived jobs, mean"
@@ -192,12 +197,12 @@ scalar SuperMarket.checkout.localSink[0] queuesVisited:max 1
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of queues visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[0] totalServiceTime:mean 62.16479194148
+scalar SuperMarket.checkout.localSink[0] totalServiceTime:mean 58.26491646778
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent  by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[0] totalServiceTime:max 150
+scalar SuperMarket.checkout.localSink[0] totalServiceTime:max 342
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent  by arrived jobs, max"
@@ -212,22 +217,22 @@ attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in delay nodes by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[0] totalQueueingTime:mean 649172.04572916
+scalar SuperMarket.checkout.localSink[0] totalQueueingTime:mean 38.821778012547
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent in queues by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[0] totalQueueingTime:max 1285640.810301
+scalar SuperMarket.checkout.localSink[0] totalQueueingTime:max 333.55782796911
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in queues by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[0] lifeTime:mean 649234.2105211
+scalar SuperMarket.checkout.localSink[0] lifeTime:mean 97.086694480327
 attr interpolationmode none
 attr recordingmode mean
 attr title "lifetime of arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[0] lifeTime:max 1285677.6260464
+scalar SuperMarket.checkout.localSink[0] lifeTime:max 515.10833209753
 attr interpolationmode none
 attr recordingmode max
 attr title "lifetime of arrived jobs, max"
@@ -249,7 +254,7 @@ scalar SuperMarket.checkout.localSink[1] delaysVisited:max 0
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of delays visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[1] queuesVisited:mean 0.99997605077236
+scalar SuperMarket.checkout.localSink[1] queuesVisited:mean 0.54468085106383
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total number of queues visited by arrived jobs, mean"
@@ -257,12 +262,12 @@ scalar SuperMarket.checkout.localSink[1] queuesVisited:max 1
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of queues visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[1] totalServiceTime:mean 62.074027062627
+scalar SuperMarket.checkout.localSink[1] totalServiceTime:mean 57.134042553191
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent  by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[1] totalServiceTime:max 150
+scalar SuperMarket.checkout.localSink[1] totalServiceTime:max 480
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent  by arrived jobs, max"
@@ -277,22 +282,22 @@ attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in delay nodes by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[1] totalQueueingTime:mean 645620.21365918
+scalar SuperMarket.checkout.localSink[1] totalQueueingTime:mean 31.690479399589
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent in queues by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[1] totalQueueingTime:max 1290718.3803653
+scalar SuperMarket.checkout.localSink[1] totalQueueingTime:max 382.46854539989
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in queues by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[1] lifeTime:mean 645682.28768624
+scalar SuperMarket.checkout.localSink[1] lifeTime:mean 88.82452195278
 attr interpolationmode none
 attr recordingmode mean
 attr title "lifetime of arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[1] lifeTime:max 1290736.3803653
+scalar SuperMarket.checkout.localSink[1] lifeTime:max 603.40442580725
 attr interpolationmode none
 attr recordingmode max
 attr title "lifetime of arrived jobs, max"
@@ -314,7 +319,7 @@ scalar SuperMarket.checkout.localSink[2] delaysVisited:max 0
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of delays visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[2] queuesVisited:mean 0.99988378849506
+scalar SuperMarket.checkout.localSink[2] queuesVisited:mean 0.42094017094017
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total number of queues visited by arrived jobs, mean"
@@ -322,12 +327,12 @@ scalar SuperMarket.checkout.localSink[2] queuesVisited:max 1
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of queues visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[2] totalServiceTime:mean 301.21743172574
+scalar SuperMarket.checkout.localSink[2] totalServiceTime:mean 57.384615384615
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent  by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[2] totalServiceTime:max 1506
+scalar SuperMarket.checkout.localSink[2] totalServiceTime:max 351
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent  by arrived jobs, max"
@@ -342,22 +347,22 @@ attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in delay nodes by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[2] totalQueueingTime:mean 1056462.0362366
+scalar SuperMarket.checkout.localSink[2] totalQueueingTime:mean 25.8052977582
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent in queues by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[2] totalQueueingTime:max 2112640.7934897
+scalar SuperMarket.checkout.localSink[2] totalQueueingTime:max 332.5715916415
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in queues by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[2] lifeTime:mean 1056763.2536684
+scalar SuperMarket.checkout.localSink[2] lifeTime:mean 83.189913142816
 attr interpolationmode none
 attr recordingmode mean
 attr title "lifetime of arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[2] lifeTime:max 2112826.7934897
+scalar SuperMarket.checkout.localSink[2] lifeTime:max 510.10091179432
 attr interpolationmode none
 attr recordingmode max
 attr title "lifetime of arrived jobs, max"
@@ -379,7 +384,7 @@ scalar SuperMarket.checkout.localSink[3] delaysVisited:max 0
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of delays visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[3] queuesVisited:mean 0.99988319121598
+scalar SuperMarket.checkout.localSink[3] queuesVisited:mean 0.34210526315789
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total number of queues visited by arrived jobs, mean"
@@ -387,12 +392,12 @@ scalar SuperMarket.checkout.localSink[3] queuesVisited:max 1
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of queues visited by arrived jobs, max"
-scalar SuperMarket.checkout.localSink[3] totalServiceTime:mean 302.74138535218
+scalar SuperMarket.checkout.localSink[3] totalServiceTime:mean 58.894736842105
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent  by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[3] totalServiceTime:max 1608
+scalar SuperMarket.checkout.localSink[3] totalServiceTime:max 261
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent  by arrived jobs, max"
@@ -407,28 +412,28 @@ attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in delay nodes by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[3] totalQueueingTime:mean 1060611.8806628
+scalar SuperMarket.checkout.localSink[3] totalQueueingTime:mean 17.558002329005
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent in queues by arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[3] totalQueueingTime:max 2114597.375258
+scalar SuperMarket.checkout.localSink[3] totalQueueingTime:max 232.39070674039
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in queues by arrived jobs, max"
 attr unit s
-scalar SuperMarket.checkout.localSink[3] lifeTime:mean 1060914.6220481
+scalar SuperMarket.checkout.localSink[3] lifeTime:mean 76.452739171111
 attr interpolationmode none
 attr recordingmode mean
 attr title "lifetime of arrived jobs, mean"
 attr unit s
-scalar SuperMarket.checkout.localSink[3] lifeTime:max 2114852.375258
+scalar SuperMarket.checkout.localSink[3] lifeTime:max 321.86087590973
 attr interpolationmode none
 attr recordingmode max
 attr title "lifetime of arrived jobs, max"
 attr unit s
 par SuperMarket.checkout typename "\"quick_checkout.Checkout\""
-par SuperMarket.checkout p 0.5
+par SuperMarket.checkout p 0
 par SuperMarket.globalSink typename "\"quick_checkout.GlobalSink\""
 par SuperMarket.globalSink keepCustomers false
 scalar SuperMarket.globalSink generation:mean 0
@@ -447,7 +452,7 @@ scalar SuperMarket.globalSink delaysVisited:max 0
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of delays visited by arrived customers, max"
-scalar SuperMarket.globalSink queuesVisited:mean 0.99996024489147
+scalar SuperMarket.globalSink queuesVisited:mean 0.57011004614838
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total number of queues visited by arrived customers, mean"
@@ -455,12 +460,12 @@ scalar SuperMarket.globalSink queuesVisited:max 1
 attr interpolationmode none
 attr recordingmode max
 attr title "the total number of queues visited by arrived customers, max"
-scalar SuperMarket.globalSink totalServiceTime:mean 103.0413353741
+scalar SuperMarket.globalSink totalServiceTime:mean 57.77529286475
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent  by arrived customers, mean"
 attr unit s
-scalar SuperMarket.globalSink totalServiceTime:max 1608
+scalar SuperMarket.globalSink totalServiceTime:max 480
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent  by arrived customers, max"
@@ -475,22 +480,22 @@ attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in delay nodes by arrived customers, max"
 attr unit s
-scalar SuperMarket.globalSink totalQueueingTime:mean 717538.50878774
+scalar SuperMarket.globalSink totalQueueingTime:mean 33.132311431392
 attr interpolationmode none
 attr recordingmode mean
 attr title "the total time spent in queues by arrived customers, mean"
 attr unit s
-scalar SuperMarket.globalSink totalQueueingTime:max 2114597.375258
+scalar SuperMarket.globalSink totalQueueingTime:max 382.46854539989
 attr interpolationmode none
 attr recordingmode max
 attr title "the total time spent in queues by arrived customers, max"
 attr unit s
-scalar SuperMarket.globalSink lifeTime:mean 717641.55012311
+scalar SuperMarket.globalSink lifeTime:mean 90.907604296142
 attr interpolationmode none
 attr recordingmode mean
 attr title "lifetime of arrived customers, mean"
 attr unit s
-scalar SuperMarket.globalSink lifeTime:max 2114852.375258
+scalar SuperMarket.globalSink lifeTime:max 603.40442580725
 attr interpolationmode none
 attr recordingmode max
 attr title "lifetime of arrived customers, max"

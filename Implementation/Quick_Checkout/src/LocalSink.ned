@@ -34,7 +34,7 @@ simple LocalSink
         @statistic[queuesVisited](title="the total number of queues visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[delaysVisited](title="the total number of delays visited by arrived jobs";record=vector?,mean,max;interpolationmode=none);
         @statistic[generation](title="the generation of the arrived jobs";record=vector?,mean,max;interpolationmode=none);
-    
+        
     gates:
         input in;
         output out;

@@ -24,6 +24,8 @@ void GlobalSink::initialize()
     delaysVisitedSignal = registerSignal("delaysVisited");
     generationSignal = registerSignal("generation");
     keepCustomers = par("keepCustomers");
+
+    qF = qN = 0;
 }
 
 void GlobalSink::handleMessage(cMessage *msg)
@@ -39,12 +41,21 @@ void GlobalSink::handleMessage(cMessage *msg)
     emit(delaysVisitedSignal, customer->getDelayCount());
     emit(generationSignal, customer->getGeneration());
 
+    customer->getNumberOfItems() <= (int)getParentModule()->
+                                    getSubmodule("checkout")->
+                                    getSubmodule("classifier")->
+                                    par("K") ? qF++ : qN++;
+
     if (!keepCustomers)
         delete msg;
 }
 
 void GlobalSink::finish()
 {
+    EV<<"Tot. code veloci : "<<qF<<"\n";
+    EV<<"Tot. code normali : "<<qN<<"\n";
+    EV<<"Percentuale code veloci : "<<(double)qF/(qF+qN)<<"\n";
+    EV<<"Percentuale code normali : "<<(double)qN/(qF+qN)<<"\n";
     // TODO missing scalar statistics
 }
 

@@ -33,6 +33,8 @@ void Classifier::handleMessage(cMessage *msg)
     int quickTills = floor(C*p);
     int normalTills = C - quickTills;
 
+    EV<<customer->getName()<<" has "<<customer->getNumberOfItems()<<" items\n";
+
     if(customer->getNumberOfItems() <= K){
         if(strcmp(policy, "equallylikely") == 0){
             outGateIndex = (int)uniform(0, quickTills);

@@ -29,6 +29,8 @@ class QUEUEING_API GlobalSink : public cSimpleModule
 	simsignal_t generationSignal;
     bool keepCustomers;
 
+	int qF, qN;
+
   protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
