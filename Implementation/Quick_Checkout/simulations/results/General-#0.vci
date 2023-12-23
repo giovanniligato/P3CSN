@@ -1,5 +1,5 @@
-file 307239 1703089759                                          
-version 3
+file 307239 1703195151                                          
+version 2
 run General-0-20231220-17:25:36-17912
 attr configname General
 attr datetime 20231220-17:25:36
@@ -36,50 +36,49 @@ vector 0 SuperMarket.checkout.queues[0] queueLength:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "queue length"
+0	2438 49315 0 16866 0 86189.724315995742 1694 0 2 893 939
 vector 1 SuperMarket.checkout.queues[1] queueLength:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "queue length"
+1	51753 29819 0 16906 0 86355.503100553974 1025 0 2 536 560
 vector 2 SuperMarket.checkout.queues[2] queueLength:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "queue length"
+2	81572 11470 0 16896 0 86310.699288208716 396 0 2 204 210
 vector 3 SuperMarket.checkout.queues[3] queueLength:vector ETV
 attr interpolationmode sample-hold
 attr recordingmode vector
 attr title "queue length"
+3	93042 3049 0 16903 0 86329.628008915493 105 0 2 54 56
 vector 4 SuperMarket.checkout.localSink[0] lifeTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr title "lifetime of arrived jobs"
 attr unit s
+4	96091 48774 8 16862 56.876235136973 86173.588465787314 1257 3 515.10833209753 122037.97496177 19328237.320818
 vector 5 SuperMarket.globalSink lifeTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr title "lifetime of arrived customers"
 attr unit s
+5	144865 105573 9 16914 56.876235136973 86374.628008915493 2817 3 603.40442580725 256086.72130223 39453143.280733
 vector 6 SuperMarket.checkout.localSink[2] lifeTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr title "lifetime of arrived jobs"
 attr unit s
+6	250438 16587 23 16883 239.542149915811 86276.93931337782 468 3 510.10091179432 38932.879350838 5938937.1542024
 vector 7 SuperMarket.checkout.localSink[1] lifeTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr title "lifetime of arrived jobs"
 attr unit s
+7	267025 34934 32 16910 300.299095895153 86361.503100553974 940 3 603.40442580725 83495.050635613 12730025.364514
 vector 8 SuperMarket.checkout.localSink[3] lifeTime:vector ETV
 attr interpolationmode none
 attr recordingmode vector
 attr title "lifetime of arrived jobs"
 attr unit s
-0	2438 49315 0 16866 0 86189.724315995742 1694 0 2 893 939
-1	51753 29819 0 16906 0 86355.503100553974 1025 0 2 536 560
-2	81572 11470 0 16896 0 86310.699288208716 396 0 2 204 210
-3	93042 3049 0 16903 0 86329.628008915493 105 0 2 54 56
-4	96091 48774 8 16862 56.876235136973 86173.588465787314 1257 3 515.10833209753 122037.97496177 19328237.320818
-5	144865 105573 9 16914 56.876235136973 86374.628008915493 2817 3 603.40442580725 256086.72130223 39453143.280733
-6	250438 16587 23 16883 239.542149915811 86276.93931337782 468 3 510.10091179432 38932.879350838 5938937.1542024
-7	267025 34934 32 16910 300.299095895153 86361.503100553974 940 3 603.40442580725 83495.050635613 12730025.364514
-8	301959 5278 728 16913 3766.269761033988 86374.628008915493 152 3 321.86087590973 11620.816354009 1455943.4411978
-
+8	301959 5280 728 16913 3766.269761033988 86374.628008915493 152 3 321.86087590973 11620.816354009 1455943.4411978

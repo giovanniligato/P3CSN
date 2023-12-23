@@ -198,7 +198,7 @@ After this considerations we proceeded in the following way.
 
 We could try from the beginning with n = 100...
 
-(1) We set n = 40 (i.e. number of repetitions) and we tried different configurations of T, M and K, where in all of them we set K to be the 30% of M. With this latter precaution we are sure that the same percentage of customers will be routed to the quick-checkout tills in all the configurations. The configurations that we chose are the following:
+(1) We set n = 40 (i.e. number of repetitions) and we tried different configurations of T, M and K, where in all of them we set K to be the 33% of M (customers routed are 33%). With this latter precaution we are sure that the same percentage of customers will be routed to the quick-checkout tills in all the configurations. The configurations that we chose are the following:
 
 - Slow Behaviour Experiment:
   - T = 60
@@ -285,6 +285,59 @@ Base configuration:
 By slightly increasing T we expect to see the Total Queueing time as seen by the global sink, decreasing. This is because by increasing T we will have less customers in the system and so the Total Queueing time will decrease.
 We try this by increasing T by 1. The last configuration will be when T = 35.
 For each configuration we run 50 simulations.
+
+
+
+Verification against the theoretical model
+When we verify the implemented model against the theoretical model we have to consider the "equallylikely" configuration of the classifier, because in the theoretical model that we proposed the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a till is the same.
+
+The configuration that we consider in the simulator is the following:
+- C = 4
+- p = 0.5
+- T = 30 --> $t = \frac{1}{30}$
+- M = 20 --> $m = \frac{1}{20}$
+- K = 8 
+- $\alpha(K) = 0.33$
+
+The service time of a till is given by $S = M\cdot 3s$.
+So the service rate is given by $s = \frac{1}{S} = \frac{1}{M\cdot 3s} = \frac{1}{20\cdot 3s} = \frac{1}{60s}$.
+
+Now we can compute the probability of a customer to be routed in particular a quick-checkout till and in a normal-checkout till. We have that:
+
+
+Quick-checkout till ($0\le i \le 1$):
+$\pi_i = 0.165$
+
+Here we have that the rate in input is given by:
+$t_i = t*\pi_i = \frac{1}{30}\cdot 0.165 = \frac{1}{182} = 0.0055$ 
+
+The service rate is the same:
+$s_i = s = \frac{1}{60}$
+
+So in these cases the performance indexes are the following:
+
+$\rho_i = \frac{t_i}{s_i} = \frac{0.0055}{\frac{1}{60}} = 0.33$
+$E[N_i] = \frac{\rho_i}{1-\rho_i} = \frac{0.33}{1-0.33} = 0.5$
+$E[N_{q_i}] = E[N_i] - \rho_i = 0.5 - 0.33 = 0.167$
+$E[R_i] = \frac{E[N_i]}{t_i} = \frac{0.5}{0.0055} = 90$
+$E[W_i] = E[R_i] - \frac{1}{s_i} = 90 - 60 = 30$
+
+
+Normal-checkout till ($2\le j \le 3$):
+$\pi_j = 0.335$ 
+
+Here we have that the rate in input is given by:
+$t_j = t*\pi_j = \frac{1}{30}\cdot 0.335 = \frac{1}{89} = 0.0112$
+
+The service rate is the same:
+$s_j = s = \frac{1}{60}$
+
+So in these cases the performance indexes are the following:
+$\rho_j = \frac{t_j}{s_j} = \frac{0.0112}{\frac{1}{60}} = 0.67$
+$E[N_j] = \frac{\rho_j}{1-\rho_j} = \frac{0.67}{1-0.67} = 2$
+$E[N_{q_j}] = E[N_j] - \rho_j = 2 - 0.67 = 1.33$
+$E[R_j] = \frac{E[N_j]}{t_j} = \frac{2}{0.0112} = 180$
+$E[W_j] = E[R_j] - \frac{1}{s_j} = 180 - 60 = 120$
 
 
 
