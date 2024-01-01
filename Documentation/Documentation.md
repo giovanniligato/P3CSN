@@ -5,11 +5,17 @@
 
 ## Objectives
 
+
+Our main objectives for this study are two:
+
+1. Find the best configuration of K and p given a realistic workload (i.e. inter-arrival time and number of items in a customer's cart) so that the average waiting time and the average response time are minimized.
+
+2. Prove that, at the steady-state, the performance indexes of the system in the optimal configuration (found in the point 1.) are similar when the classifier implements the join the shortest queue policy (dynamic load balancing) and when the classifier implements the equally likely policy (static load balancing).
+
 Analizzare il comportamento delle code sia in termini di dimensioni che in termini di tempo di attesa per 
 ogni cliente.
 
 Dimostrare che, allo Steady State, gli indici di performance di un sistema che implementa la policy di join the shortest queue (dynamic load balancing) tendono a quelli in cui la probabilità di routing è equa per ogni nuovo arrivo (i.e. 1/numero code), al variare di p e K.
-
 
 ## Key Performance Indices (KPIs)
 
@@ -341,25 +347,197 @@ $E[W_j] = E[R_j] - \frac{1}{s_j} = 180 - 60 = 120$
 
 
 
+buttare via i signal che non uso fare tutto in funzioe di s e rho. + fare formula condizionata con denominatore = P{1<=X<=8}
+
+
+Togliere round togliere +1 e tutto... mettere anche double clienti...
 
 
 
 
 
+Discrete Case:
+
+M = 20
+
+M' = 19
+
+M = M' + 1
+M' = M -1
+F_M(K) - F_M(1) = P{1<=M<=K} = P{M<=K} - P{M<=1} = P{M'+1<=K} - P{M'+1<=1} = P{M'<=K-1} - P{M'<=0} = P{M'<=K-1} = F_M'(K-1)
+
+F_M'(K-1) = 1-e^(-(K-1)/(M-1)) = 1-e^(-(K-1)/(M'))
+
+7 = K-1
+x = [0,7]
+round(x) = floor(x+0.5)
+round(x+1) = floor(x+1+0.5)
+x = [1,2,...,8]
+
+[0...., 7.5]
++1
+[>0.5,.... 8.5]
+round()
+[1...... 8]
+
+
+$$X$$
+$$g(X) = round(X+1)$$
+$$g(X) = floor(X+1+0.5)$$
+$$E[X|P\{M\leq K\}]_i = \frac{1}{P\{M \leq K\}} \int_{0}^{K-0.5} g(x) f_X(x) dx =$$
+$$\frac{1}{P\{M \leq K\}} \int_{0}^{K-0.5} floor(x+1+0.5) \frac{1}{M-1}e^{-\frac{x}{M-1}}$$
+$$E[X|P\{M> K\}]_j = \frac{1}{P\{M> K\}} \int_{K-0.5}^{+\infty} floor(x+1+0.5) \frac{1}{M-1}e^{-\frac{x}{M-1}}$$
+
+$$Var(X) = E[X^2] - (E[X])^2$$
+
+$$l(x)=x^2$$
+$$l(g(x))=(g(x))^2= (floor(x+1+0.5))^2$$
+
+$$E[X^2 |P\{M> K\}]_j = \frac{1}{P\{M> K\}} \int_{K-0.5}^{+\infty} (floor(x+1+0.5))^2 \frac{1}{M-1}e^{-\frac{x}{M-1}}$$
+
+
+https://en.wikipedia.org/wiki/Truncated_distribution
 
 
 
+### Verification against the theoretical model
 
 
+### Lognormal Distribution
+Here we consider the case where the distribution of the number of items in a customer's cart is lognormal. We consider the following parameters:
+
+$sT = 3$
+
+M is a random variable with a lognormal distribution with parameters $\mu$ and $\sigma^2$.
+
+The PDF of M is given by:
+
+$f_M(m) = \frac{1}{m\sigma\sqrt{2\pi}}e^{-\frac{(\ln(m) - \mu)^2}{2\sigma^2}}$
 
 
+Mean Service Time
+$E[t_s] = sT * E[M] = sT * e^{\mu + \frac{\sigma^2}{2}}$
+
+Variance of the Service Time
+$Var(t_s) = Var(sT * M)= sT^2 * (e^{\sigma^2} - 1) * e^{2\mu + \sigma^2}$
+
+For computing the parameters $\mu$ and $\sigma^2$ we use:
+
+$\mu = \ln(\frac{E[M]^2}{\sqrt{Var(M) + E[M]^2}})$
+
+$\sigma^2 = \ln(1 + \frac{Var(M)}{E[M]^2})$
 
 
 ## Factors Calibration
 
+We have to tune the simulation parameters so that scenarios are realistic. Considering the information reported in (https://homafiles.info/2009/08/20/how-long-do-you-wait-in-line-to-checkout-at-the-supermarket/) we can see that there is stated that:
+
+    Supermarket lines may not be the longest, just the most loathed. Two years ago, in 20 out of 25 major U.S. cities, the average wait time at grocery stores was under five minutes.
+
+So we consider the worst case where the average waiting time is 5 minutes. At this point by imposing that the average wait time is 5 minutes we can compute the other parameters.
+
+
+Average waiting time
+$E[W] = 5m = 300s = E[R] - E[t_S]$
+
+Average number of items in a customer's cart
+$E[M] = 30items$
+
+Service Time for item $3s$
+
+Mean Service Time
+$E[t_S] = 3s * E[M] = 3s * 30 = 90s$
+$E[t_S] = \frac{1}{s} = \frac{1}{90s}$ (Exponential Distribution of the number of items in a customer's cart)
+
+Average Response Time
+$E[R] = E[W] + E[t_S] = 300s + 90s = 390s$
+
+
+In our everyday life the mean number of tills in a supermarket that we visit for buying groceries is 10. So we fix the parameter C to be equal to 10.
+
+For computing the upper bound of the inter-arrival rate we can consider the formula for the stability of an M/M/C.
+
+$\rho = \frac{t}{C\cdot s} < 1$
+$t < C\cdot s = 10 \cdot \frac{1}{90s} = \frac{1}{9}$
+$9 < \frac{1}{t}$
+$9 < T$
+$T > 9s$
+
+This is the lower bound for the inter-arrival time.
+If T = 20s 
+
+For choosing a right value for the parameters at this point we can consider the simplified case where there are only normal-checkout tills. In the next phase of experiments design we will introduce the quick-checkout tills and we will see how the systems behaves. We however expect to see the averge waiting time to decrease because customers with few items in their cart will be routed to the quick-checkout tills and so the average waiting time of the overall system will decrease. So we start from the situation where without quick-checkout tills the average waiting time is 5 minutes. For finding the right value of T we start from the minimum possible and we increase this value by 5 until we reach the situation where the average waiting time is 5 minutes. So let's do this.
+
+C=10
+p=0
+K=0
+
+T = [10, 15, 20, 25, 30, 35, 40]
+
+But we obtained that when T = 120 the average waiting time is 120s so we decided to do a step back and consider a smaller interval that is always above 9, but less than 10. So we consdered:
+
+T = [9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7]
+
+At this point we can see that when T is between 9.2 and 9.3 we cover the 5 minutes of average waiting time. So we can consider a smaller interval that is always above 9.2, but less than 9.3. So we considered:
+
+T = [9.23, 9.24, 9.25, 9.26, 9.27]
+
+Now we choose the value of T to be 9.26 because the mean value of the waiting time is 300s (5 minutes) with the CI we do not go too far from this value. So we can consider T = 9.26.
+
+
+p = [0.1,0.2,0.3,0.4,0.5]
+K = [9,10,11,12,13,14,15,16,17,18,19,20,21]
+
+
+E[M] = 30
+Var(M) = 900 = 1/s^2  = 1/(1/30)^2 = 30^2 
+
+$\mu = \ln(\frac{E[M]^2}{\sqrt{Var(M) + E[M]^2}})$
+$\sigma^2 = \ln(1 + \frac{Var(M)}{E[M]^2})$
+
+mu = 3.055
+sigma = 0.833
+
+
+### Warmup-Period and Simulation Time
+Now when talking about the estimation for the warmup-period we have to consider another index, because considering the mean waiting time we saw that it was unstable due to the fact that it can assume many times the value 0. For this reason we focus on the mean service time at each till.
+
+Running the simulation for 24 hours (sim-time) and plotting the Time average of the mean service time at each till we obtain the following plot.
+
+![Plot of the Time average of the mean service time at each till](../Implementation/Calibration/Before_WarmupPeriod.svg)
+
+Observing the plot we can see that after the first 10'000s the mean service time surpasses the intial transient beginning to stabilize around the value that it will reach at the steady-state. So we can consider the warmup-period to be equal to 10'000s.
+
+At this point it is also clear that 24 hours (sim-time) are too much for the simulation. So we reduce the total simulation time of each run to 16 hours (i.e. 57'600s) that would be enough for the next phases. A mapping to the reality would be a supermarket that is open from 7:00 to 23:00 (i.e. 16 hours). 
+
+
 ## Experiments Design
 
+Having only 2 factors (p and K) we can consider a full factorial design. So we consider the following configurations:
+
+T = 9.26
+M = 30
+C = 10
+
+p = [0.1, 0.2, 0.3, 0.4, 0.5]
+K = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+
+p = ${0.1, 0.2, 0.3, 0.4, 0.5}
+K = ${9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21}
+
+Further studies:
+
+
+p = [0.1,0.2,0.3]
+K = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]
+p = ${0.1,0.2,0.3}
+K = ${13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32}
+
+
+
 ## Simulation Run
+
+
 
 ## Results Analysis
 

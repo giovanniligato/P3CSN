@@ -1,4 +1,7 @@
-Implementation/Verification/
 Implementation/Quick_Checkout/out/
 Implementation/Quick_Checkout/simulations/results/
 Implementation/Quick_Checkout/simulations/*.anf
+Implementation/Quick_Checkout/out/*
+
+Implementation/Python_Scripts/**/*.csv
+

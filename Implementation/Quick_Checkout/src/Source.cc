@@ -9,6 +9,7 @@
 
 #include "Source.h"
 #include "Customer_m.h"
+#include <cmath>
 
 namespace queueing {
 
@@ -24,7 +25,7 @@ Customer *SourceBase::createCustomer()
     char buf[80];
     sprintf(buf, "%.60s-%d", "Customer", ++customerCounter);
     Customer *customer = new Customer(buf);
-    customer->setNumberOfItems(par("numberOfItems"));
+    customer->setNumberOfItems(round(par("numberOfItems")));
     return customer;
 }
 
