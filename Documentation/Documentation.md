@@ -221,7 +221,7 @@ We set the number of repetitions $n$ to be equal to 50 (i.e. greater than 30). W
 
 Now we can show the plot that we have obtained for the different queues among the different configurations. Here we can see the behaviour that we proved before in the mathematical considerations, that is: when considering two consecutive configurations, we see that the waiting time in each queue is halved.
 
-
+<!---->
 <!-- ![Plot of the different queues](Resources/Plot.png) -->
 
 
