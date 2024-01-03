@@ -202,9 +202,7 @@ We can clearly see that here the waiting time is halved.
 
 After this considerations we proceeded in the following way.
 
-We could try from the beginning with n = 100...
-
-(1) We set n = 40 (i.e. number of repetitions) and we tried different configurations of T, M and K, where in all of them we set K to be the 33% of M (customers routed are 33%). With this latter precaution we are sure that the same percentage of customers will be routed to the quick-checkout tills in all the configurations. The configurations that we chose are the following:
+We set the number of repetitions $n$ to be equal to 50 (i.e. greater than 30). We run the simulation for 24 hours (of sim-time) using different configurations of $T$ and $M$. In each of them we set $K$ in a way that the percentage of customers routed to the quick-checkout tills is the same (i.e. 33%). Referring to the previous defined quantity $\aplha(K)$, we set $K$ in a way that $\alpha(K) = 0.33$. At this point we proposed the following configurations:
 
 - Slow Behaviour Experiment:
   - T = 60
@@ -221,19 +219,8 @@ We could try from the beginning with n = 100...
   - M = 10
   - K = 4
 
-Every simulation was run for 24 hours (sim-time). 
+Now we can show the plot that we have obtained for the different queues among the different configurations. Here we can see the behaviour that we proved before in the mathematical considerations, that is: when considering two consecutive configurations, we see that the waiting time in each queue is halved.
 
-To review the following observations because they are not really clear...
-
-(2) Analyzing the results we saw that in the Fast Behaviour Experiment, for the queue of index 1...
-
-(2) We used the results related to the queues[1] of the Fast Behaviour Experiment because we saw that this particular queue for this particular configuration had the worst results in terms of waiting time (in the sense that the waiting time was the lowest among the different queues of the different configurations because in the fast configuration there were a lot of situations where customers didn't pass from this queue because the shortest queue was often the queue with index 0 because at most M was equal to 4 if we were in this subsystem). We obtained that $\bar{X} = 0.329617$ and $S = 0.233714$. Putting this number into the formula for the number of samples we obtain:
-
-$$n = \left(\frac{z_{0.05}\cdot S}{r\cdot \bar{X} } \right)^2 = 772.54$$ 
-
-Where $r = 0.05$. For this reason we considered n = 800 as the number of samples to be used for the simulation. At this point we run again the simulation for 24 hours (sim-time) and we obtained that (for queue[1] Fast configuration) $\bar{X} = 0.294218$ and $S = 0.246594$. That are not much different from the previous values. 
-
-Now can show the plot that we have obtained for the different queues among the different configurations. Here we can see the behaviour that we proved before in the mathematical considerations.
 
 <!-- ![Plot of the different queues](Resources/Plot.png) -->
 
