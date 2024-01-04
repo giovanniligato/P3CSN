@@ -124,8 +124,6 @@ To implement the theoretical model we will consider the following modules:
 
 
 
-
-
 Aggiungendo 1 come cambia il Service time? Peggiora di molto? E se condizioni stabilità si modificano?
 
 If you add a constant \( c \) to each observation, the mean of the new distribution will be the sum of the original mean and the constant:
@@ -202,7 +200,7 @@ We can clearly see that here the waiting time is halved.
 
 After this considerations we proceeded in the following way.
 
-We set the number of repetitions $n$ to be equal to 50 (i.e. greater than 30). We run the simulation for 24 hours (of sim-time) using different configurations of $T$ and $M$. In each of them we set $K$ in a way that the percentage of customers routed to the quick-checkout tills is the same (i.e. 33%). Referring to the previous defined quantity $\aplha(K)$, we set $K$ in a way that $\alpha(K) = 0.33$. At this point we proposed the following configurations:
+We set the number of repetitions $n$ to be equal to 50 (i.e. greater than 30). We run the simulation for 24 hours (of sim-time) using different configurations of $T$ and $M$. In each of them we set $K$ in a way that the percentage of customers routed to the quick-checkout tills is the same (i.e. 33%). Referring to the previous defined quantity $\alpha(K)$, we set $K$ in a way that $\alpha(K) = 0.33$. At this point we proposed the following configurations:
 
 - Slow Behaviour Experiment:
   - T = 60
@@ -221,51 +219,44 @@ We set the number of repetitions $n$ to be equal to 50 (i.e. greater than 30). W
 
 Now we can show the plot that we have obtained for the different queues among the different configurations. Here we can see the behaviour that we proved before in the mathematical considerations, that is: when considering two consecutive configurations, we see that the waiting time in each queue is halved.
 
-<!---->
-<!-- ![Plot of the different queues](Resources/Plot.png) -->
-
 
 ## Degeneracy Test(s)
 
-Here we propose different tests to assess the behaviour of the system in borderline cases. In all the tests we will consider the following parameters:
+Here we propose different tests to assess the behaviour of the system in borderline cases. In all the tests we will fix the following parameters to these values:
+
 M = 20 
 T = 30
 C = 4
-(balanced configuration)
-Both Exponential
 
-In all these tests we will consider the Mean number of customers in queue.
+Number of repetitions n = 50
 
+Just to recall, these are the values used in the balanced configuration of the consistency test. Even in this section we will be stuck to the exponential distribution for both the inter-arrival time and the number of items in a customer's cart.
 
-1. K = 0 (i.e. unused quick-checkout tills)
-p = 0.5
-Running 100 simulations we saw that in both queues[0] and queues[1] (i.e. quick-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had more than K items in their cart and so they were routed to the normal-checkout tills.
+The performance index that we will consider in all the degeneracy tests is the mean number of customers in queue $E[N_q]$.
 
+### 1st Degeneracy Test: K = 0 and p $\neq$ 0
+The situation where K = 0 and p $\neq$ 0 (in particular p = 0.5)  is the one where we do have Quick Tills (i.e. $p \neq 0$) but they are unused. This is because it is not possible for a customer to have 0 items in his/her cart and so there will nevere be a customer that will be routed to a quick till (i.e. M <= K). Only the normal tills will be available for the checkout of the customers. From these considerations we expect to see from the results that the max number of customers in queue in the quick tills will be 0 and the max number of customers in queue in the normal tills will be greater than 0.
 
-2. K = 1000 (negligible probability of being served in a normal-checkout till).
-p = 0.5
-Again, running 100 simulations we saw that in both queues[2] and queues[3] (i.e. normal-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had less than K items in their cart and so they were routed to the quick-checkout tills.
+From the results (reported in a table format) we see that in both queues[0] and queues[1] (i.e. quick-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had more than K (=0) items in their cart and so they were routed to the normal-checkout tills.
 
+### 2nd Degeneracy Test: K = 1000 and p $\neq$ 1
+This is the dual situation of the previous one, where we do have Normal Tills (i.e. p $\neq$ 1), but they are unused. This happens because the probability of a customer to be routed to a normal till is negligible (i.e. $\alpha(K) \thickapprox 0$). So here we expect to see that the max number of customers in queue in the quick tills will be greater than 0 and the max number of customers in queue in the normal tills will be 0. 
 
-3. p = 0 (i.e. no quick-checkout tills)
-
-K = NA (not applicable) NO!!! K = 0 sennò va tutto in coda 0!!!!
-
-FARE PROVA CON K = 1000 e vedere se va tutto in coda 0!!!
-
-Problema risolto perché int(exp) mi fa generare roba con 0 oggetti e quindi va tutto in coda 0!!! (vedi codice classifier) provare a risolvere questo problema con ceil per non modificare mean value dell'exp sennò aggiungendo 1 si modifica la media e quindi bisognerebbe sottrarre 1 alla media per non modificare il valore medio della distribuzione.
+Again, running 50 simulations we saw that in both queues[2] and queues[3] (i.e. normal-checkout tills) the max value of the samples was 0. This means that in both queues there were no customers at all. This is because all the customers had less than K items in their cart and so they were routed to the quick-checkout tills.
 
 
-[[Here will have Nq less than case 1. because we will have 2 more normal-checkout tills (C is fixed to be equal to 4 in both cases).]]
-100 simulations.
-In this case as we could imagine, the mean number of customers in queus is lower (really low and below 1 indeed) and if compared with the case 1 (K=0 and p=0.5) we have that the mean number of customers in every queue of this configuration is lower than the mean number of customers in the two queues of the previous configuration. This is because in this case we have 4 normal-checkout tills instead of 2 normal-checkout tills and 2 quick-checkout tills that were unused. So we have more tills and so the mean number of customers in queue is lower.
+### 3rd Degeneracy Test: p = 0 (i.e. no Quick Tills)
+When we consider the borderline case where p=0 that is we have only Normal Tills, K is NA (Not Applicable). This means that whatever value K has, it will not affect the behaviour of the system, because the classifier will always route the customers to the normal-checkout tills.
 
+In comparison with the 1st degeneracy test where we do have Quick Tills but they are unused, in this case we have only Normal Tills and so we expect to see that the mean number of customers in the normal tills will be lower. So here we have more tills that are working and so the mean number of customers in queue is lower.
 
-4. p = 1 (i.e. only quick-checkout tills)
-K = 1000 (negligible probability of being served in a normal-checkout till) because otherwise we will have an error thrown when the classifier tries to route a customer to a normal-checkout till. In this situation compared to the 2nd case we will have an analogous behaviour as the one described in the previous case. If instead we compare this situation with the 3rd case we will have an equal behaviour because in both cases we have only 4 tills. Note that the service time by a quick-checkout till and a normal-checkout till is the same. And by not having different type of tills we will have the exactly the same behaviour.
+### 4th Degeneracy Test: p = 1 (i.e. only Quick Tills)
+When we consider the borderline case where p=1 that is we have only Quick Tills, K is NA (Not Applicable). This means that whatever value K has, it will not affect the behaviour of the system, because the classifier will always route the customers to the quick-checkout tills, the only ones present in the system.
 
+In this situation compared to the 2nd case we will have an analogous behaviour as the one described in the previous case. Where we have 4 quick tills thar are working and in the 2nd case just two quick tills that are working. So even here the mean number of customers in queue is lower.
 
-Sistemare commenti su!
+Now it's worth to compare the 3rd and the 4th case. Because when considering these two degeneracy tests we have respectively only Normal Tills and only Quick Tills. If we recall that Quick Tills do not have nothing special compared to Normal Tills (i.e. the service time is the same), we can say that the behaviour of the system in these two cases should be exactly the same. Indeed plotting a bar chart for the Mean Number of Customers in these two cases we can see that the bars related to the same queues are identical.
+
 
 ## Continuity Test
 Here we consider the base configuration (i.e. again the balanced configuration) and we try to see how the system behaves when we slightly change T.

@@ -31,18 +31,17 @@ void Classifier::handleMessage(cMessage *msg)
     Customer *customer = check_and_cast<Customer *>(msg);
     int outGateIndex = -1;
     int quickTills = floor(C*p);
-    int normalTills = C - quickTills;
 
     EV<<customer->getName()<<" has "<<customer->getNumberOfItems()<<" items\n";
 
-    if(customer->getNumberOfItems() <= K){
+    if((customer->getNumberOfItems() <= K && quickTills > 0) || quickTills == C){
         if(strcmp(policy, "equallylikely") == 0){
             outGateIndex = (int)uniform(0, quickTills);
         }
         else if(strcmp(policy, "jtsq") == 0){
             int minQueueIndex = 0;
             int minQueueLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", 0)))->length();
-            int tempLength = -1;
+            int tempLength;
             for(int i=1; i<quickTills; i++){
                 tempLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", i)))->length();
                 if(tempLength < minQueueLength){
@@ -63,7 +62,7 @@ void Classifier::handleMessage(cMessage *msg)
         else if(strcmp(policy, "jtsq") == 0){
             int minQueueIndex = quickTills;
             int minQueueLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", quickTills)))->length();
-            int tempLength = -1;
+            int tempLength;
             for(int i=quickTills+1; i<C; i++){
                 tempLength = (check_and_cast<queueing::Queue*>(getParentModule()->getSubmodule("queues", i)))->length();
                 if(tempLength < minQueueLength){
