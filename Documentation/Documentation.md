@@ -1,10 +1,8 @@
 # A PECSN' project
 
-
 ## Description
 
 ## Objectives
-
 
 Our main objectives for this study are two:
 
@@ -67,7 +65,6 @@ $$\left\{\begin{matrix}
 
 Bisogna scrivere anche che ci si mette in coda nella coda con meno persone ma non si conta se in una coda ci sono 0 persone e qualcuno viene servito. Dunque una coda con 0 persone e con qualcuno in fase di pagamento viene vista allo stesso modo di una coda con 0 persone e nessuno in fase di pagamento.
 In più nel nostro modello le persone con pochi oggetti possono andare solo nelle code veloci e NON in quelle con molti oggetti...! Aggiungere queste osservazioni nelle assumptions.
-
 
 
 ## Validation
@@ -270,10 +267,36 @@ By slightly increasing T we expect to see the Total Queueing time as seen by the
 We try this by increasing T by 1. The last configuration will be when T = 35.
 For each configuration we run 50 simulations.
 
+Aggiungere grafico in latex + script
+BIsogna dire nella documentazione il CI a che percentuale è
 
 
-Verification against the theoretical model
-When we verify the implemented model against the theoretical model we have to consider the "equallylikely" configuration of the classifier, because in the theoretical model that we proposed the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a till is the same.
+
+## Verification against the theoretical model
+For the verification of the implemented model against the Theoretical Model it is necessary to consider the "equallylikely" configuration of the classifier, because in the proposed theoretical model the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a particular till is the same. Now, for the sake of simplicity and for explaining all the steps done during the verification, it is necessary to introduce the following hypotheses that will be released afterwards.
+
+- (1): the number of items inside a customer cart can be continuous.
+
+- (2): the situation where a customer has 0 items in his/her cart is possible.
+
+Before considering the actual values of the parameters used for verificatiom, they will be referred just as symbols:
+
+- $M$ RV that represents the number of items in a customer's cart. Here this RV is continuous and exponential.
+- $T$ RV that represents the inter-arrival time of customers. Here and always it is continuous and exponential.
+- $C$ total number of tills in the overall system.
+- $p$ percentage of quick-checkout tills.
+- $K$ maximum number of items for being served in a quick-checkout till (i.e. $M \leq K$).
+
+The probability of being routed by the classifier to the Quick-Checkout subsystem is given by $P\{M\leq K\} = F(K; \lambda_M) = 1 - e^{-\lambda_M \cdot K}$. Where $F(x; \lambda)$ is the CDF of an exponential distribution. Once the customer is routed to the Quick-Checkout subsystem, the probability of being routed to a particular Quick Till is given by $\frac{1}{C\cdot p}$ (for the equally likely static load balancing). So as described in the theoretical model, the probability of being routed to a particular Quick Till is given by: $\pi_i = \frac{P\{M\leq K\}}{C\cdot p}$. Focussing the attention on a single Quick Till, the rate of customers in input is then given by $\lambda_{T_i} = \lambda_{T} \cdot \pi_i$, where $\lambda_T$ is the rate of the exponential RV $T$. Viceversa, the service rate of an individual Quick Till is not so easy to compute as the previous one. Switching to consider the mean service time (i.e. $E[t_{S_i}]$), the latter can be computed by noticing that when a customer is routed to the Quick-Checkout subsystem, the distributio of the number of items in his/her cart is not exponential anymore, but it's truncated as the Figure Xa shows. Here the task of computing the mean (or the expectation) of that truncated distribution coincides with the task of computing $E[t_{S_i}]$. For doing this it possible to use the formula for the *expectation of a truncated random variable* (https://en.wikipedia.org/wiki/Truncated_distribution#Expectation_of_truncated_random_variable), that is:
+$$\frac{1}{F(K; \lambda_M)}\cdot \left[\int_{0}^{K} x\cdot f(x)\ dx\right] = \frac{1}{F(K; \lambda_M)} \cdot \left[\int_{0}^{K} x\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_i}]$$
+Where $f(x)$ is the PDF of an exponential distribution.
+
+-- Sono arrivato qui --
+Lo stesso con j ... normal tills
+
+
+
+When we verify the implemented model against the theoretical model we have to consider the "equallylikely" configuration of the classifier, because in the theoretical model that we proposed the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a till is the same. 
 
 The configuration that we consider in the simulator is the following:
 - C = 4
@@ -283,11 +306,13 @@ The configuration that we consider in the simulator is the following:
 - K = 8 
 - $\alpha(K) = 0.33$
 
+
 The service time of a till is given by $S = M\cdot 3s$.
 So the service rate is given by $s = \frac{1}{S} = \frac{1}{M\cdot 3s} = \frac{1}{20\cdot 3s} = \frac{1}{60s}$.
 
-Now we can compute the probability of a customer to be routed in particular a quick-checkout till and in a normal-checkout till. We have that:
+Now we can compute the probability of a customer to be routed in a *particular* quick-checkout till and in a normal-checkout till. Before this we have to compute the probability of being routed in the quick checkout subsystem. At this point for simplifying the discussion we have to introduce an Hypothesis that will be released afterwards: imagine that the number of items inside a customer cart can be continuous. The service time remains the same: $S = M\cdot 3s$, but now $M$ is a continuous random variable. The probability of a customer to be routed in the quick-checkout subsystem now becomes equal to the CDF of the number of items in a customer's cart computed for $K$
 
+This is given by $\alpha(K) = F(x; \lambda)$. $F(; \lambda)$ is the CDF of an exponential distribution with rate $\lambda$ computed for $x=$
 
 Quick-checkout till ($0\le i \le 1$):
 $\pi_i = 0.165$
@@ -329,9 +354,6 @@ buttare via i signal che non uso fare tutto in funzioe di s e rho. + fare formul
 
 
 Togliere round togliere +1 e tutto... mettere anche double clienti...
-
-
-
 
 
 Discrete Case:
@@ -425,7 +447,8 @@ Service Time for item $3s$
 
 Mean Service Time
 $E[t_S] = 3s * E[M] = 3s * 30 = 90s$
-$E[t_S] = \frac{1}{s} = \frac{1}{90s}$ (Exponential Distribution of the number of items in a customer's cart)
+
+$s = \frac{1}{S} = \frac{1}{90s}$ (Exponential Distribution of the number of items in a customer's cart)
 
 Average Response Time
 $E[R] = E[W] + E[t_S] = 300s + 90s = 390s$
@@ -442,7 +465,7 @@ $9 < T$
 $T > 9s$
 
 This is the lower bound for the inter-arrival time.
-If T = 20s 
+
 
 For choosing a right value for the parameters at this point we can consider the simplified case where there are only normal-checkout tills. In the next phase of experiments design we will introduce the quick-checkout tills and we will see how the systems behaves. We however expect to see the averge waiting time to decrease because customers with few items in their cart will be routed to the quick-checkout tills and so the average waiting time of the overall system will decrease. So we start from the situation where without quick-checkout tills the average waiting time is 5 minutes. For finding the right value of T we start from the minimum possible and we increase this value by 5 until we reach the situation where the average waiting time is 5 minutes. So let's do this.
 
