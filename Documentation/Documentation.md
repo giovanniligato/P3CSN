@@ -273,27 +273,54 @@ BIsogna dire nella documentazione il CI a che percentuale è
 
 
 ## Verification against the theoretical model
-For the verification of the implemented model against the Theoretical Model it is necessary to consider the "equallylikely" configuration of the classifier, because in the proposed theoretical model the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a particular till is the same. Now, for the sake of simplicity and for explaining all the steps done during the verification, it is necessary to introduce the following hypotheses that will be released afterwards.
+For the verification of the implemented model against the **Theoretical Model** it is necessary to consider the "equallylikely" configuration of the classifier, because in the proposed Theoretical Model the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability of being routed in a particular till is the same. Now, for the sake of simplicity and for explaining all the steps done during the verification, it is necessary to introduce the following hypotheses that will be released afterwards.
 
-- (1): the number of items inside a customer cart can be continuous.
+(1): the number of items inside a customer cart can be continuous.
 
-- (2): the situation where a customer has 0 items in his/her cart is possible.
+(2): the situation where a customer has 0 items in his/her cart is possible.
 
-Before considering the actual values of the parameters used for verificatiom, they will be referred just as symbols:
+(3): the constant that multiplies $M$ for obtaining the service time $t_S$ is 1s.
 
-- $M$ RV that represents the number of items in a customer's cart. Here this RV is continuous and exponential.
-- $T$ RV that represents the inter-arrival time of customers. Here and always it is continuous and exponential.
-- $C$ total number of tills in the overall system.
-- $p$ percentage of quick-checkout tills.
-- $K$ maximum number of items for being served in a quick-checkout till (i.e. $M \leq K$).
+Before considering the actual values of the parameters employed for verificatiom, they will be denoted merely as symbols:
 
-The probability of being routed by the classifier to the Quick-Checkout subsystem is given by $P\{M\leq K\} = F(K; \lambda_M) = 1 - e^{-\lambda_M \cdot K}$. Where $F(x; \lambda)$ is the CDF of an exponential distribution. Once the customer is routed to the Quick-Checkout subsystem, the probability of being routed to a particular Quick Till is given by $\frac{1}{C\cdot p}$ (for the equally likely static load balancing). So as described in the theoretical model, the probability of being routed to a particular Quick Till is given by: $\pi_i = \frac{P\{M\leq K\}}{C\cdot p}$. Focussing the attention on a single Quick Till, the rate of customers in input is then given by $\lambda_{T_i} = \lambda_{T} \cdot \pi_i$, where $\lambda_T$ is the rate of the exponential RV $T$. Viceversa, the service rate of an individual Quick Till is not so easy to compute as the previous one. Switching to consider the mean service time (i.e. $E[t_{S_i}]$), the latter can be computed by noticing that when a customer is routed to the Quick-Checkout subsystem, the distributio of the number of items in his/her cart is not exponential anymore, but it's truncated as the Figure Xa shows. Here the task of computing the mean (or the expectation) of that truncated distribution coincides with the task of computing $E[t_{S_i}]$. For doing this it possible to use the formula for the *expectation of a truncated random variable* (https://en.wikipedia.org/wiki/Truncated_distribution#Expectation_of_truncated_random_variable), that is:
-$$\frac{1}{F(K; \lambda_M)}\cdot \left[\int_{0}^{K} x\cdot f(x)\ dx\right] = \frac{1}{F(K; \lambda_M)} \cdot \left[\int_{0}^{K} x\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_i}]$$
+- $M$: RV that represents the number of items in a customer's cart. Here $M$ is continuous and exponential (Figure X).
+- $T$: RV that represents the inter-arrival time of customers. Here and always it is continuous and exponential.
+- $C$: total number of tills in the overall system.
+- $p$: percentage of quick-checkout tills.
+- $K$: maximum number of items for being served in a quick-checkout till (i.e. $M \leq K$).
+
+The probability of being routed by the classifier to the Quick-Checkout subsystem is given by $P\{M\leq K\} = F(K; \lambda_M) = 1 - e^{-\lambda_M \cdot K}$. Where $F(x; \lambda)$ is the CDF of an exponential distribution. Once the customer is routed to the Quick-Checkout subsystem, the probability of being routed to a particular Quick Till is given by $\frac{1}{C\cdot p}$ (for the equally likely static load balancing). So as described in the theoretical model, the probability of being routed to a particular Quick Till is given by: $\pi_i = \frac{P\{M\leq K\}}{C\cdot p}$. Focussing the attention on a single Quick Till, the rate of customers in input is then given by $\lambda_{T_i} = \lambda_{T} \cdot \pi_i$, where $\lambda_T$ is the rate of the exponential RV $T$. Viceversa, the service rate of an individual Quick Till is not so easy to compute as the previous one. Switching to consider the mean service time (i.e. $E[t_{S_i}]$), the latter can be computed by noticing that when a customer is routed to the Quick-Checkout subsystem, the distribution of the number of items in his/her cart is not exponential anymore, but it's truncated as the Figure Xa shows. Here the task of computing the mean (or the expectation) of that truncated distribution coincides with the task of computing $E[t_{S_i}]$. For doing this it possible to use the formula for the *expectation of a truncated random variable* (https://en.wikipedia.org/wiki/Truncated_distribution#Expectation_of_truncated_random_variable), that is:
+$$E[M | M \leq K] = \frac{1}{F(K; \lambda_M)}\cdot \left[\int_{0}^{K} x\cdot f(x)\ dx\right] = \frac{1}{F(K; \lambda_M)} \cdot \left[\int_{0}^{K} x\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_i}]$$
 Where $f(x)$ is the PDF of an exponential distribution.
 
--- Sono arrivato qui --
-Lo stesso con j ... normal tills
+Mutatis mutandis for the Normal-Checkout subsystem. Here, just for completeness, the probability of being routed to a specific Normal Till is given by: $\pi_j = \frac{P\{M> K\}}{C\cdot (1 - p)} = \frac{ 1 - P\{M\leq K\}}{C\cdot (1 - p)}$. Thus, the rate of customers in input is given by $\lambda_{T_j} = \lambda_{T} \cdot \pi_j$. When considering the mean service time the same observations done for the Quick-Checkout subsystem hold. In addition, hither, the distribution of the number of items in a customer's cart is a known one, a truncated exponential (as Figure Xb shows). To compute the mean of this distribution the previous formula can be utilized again, naturally after having done the necessary tweaks.
+$$E[M|M>K] = \frac{1}{1 - F(K; \lambda_M)}\cdot \left[\int_{K}^{+\infty} x\cdot f(x)\ dx\right] = \frac{1}{1-F(K; \lambda_M)} \cdot \left[\int_{K}^{+\infty} x\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_j}]$$
 
+At this point one critical point must be taken into account. In the formulas of an M/M/1 system, as the second M states, it is assumed that the service rate is distributed just as an exponential that is memory-less (M). As seen before, clearly the distributons of the service times in the two different subsystems and in particular in each till of the subsystems are not exponential anymore, because they are (in general) truncated distributions. Thus the formulas of the M/M/1 system cannot be used anymore. For this reason we have to consider the formulas of the M/G/1 system. This means that the single tills, when both quick tills and normal tills are present are M/G/1. 
+
+The general formula for the mean number of customers in an M/G/1 system is given by:
+
+$$E[N] = \rho + \frac{\rho^2 + (t)^2 \cdot Var(t_S)}{2\cdot(1 - \rho)}$$
+
+The quantity that we are missing is the variance of the service time, that can be computed using the well-known formula: $Var(t_S) = E[t_S^2] - (E[t_S])^2$.
+
+Considering firstly the Quick-Checkout subsystem, the variance of the service time here is: $Var(t_{S_i}) = E[t_{S_i}^2] - (E[t_{S_i}])^2$. The second term inside the squared has already been computed and need only to be squared. To compute $E[t_{S_i}^2]$ the following observations can be made, that will be useful also later when the hypotheses will be release.
+
+- Remembering that $E[g(X)] = \int_{-\infty}^{+\infty} g(x) f_X(x)\ dx$
+
+- For computing $E[t_{S_i}^2]$ that in our case is equal 
+$$E[M^2|M\leq K] = \frac{1}{F(K; \lambda_M)} \cdot \left[\int_{0}^{K} x^2\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_i}^2]$$
+
+Moving on the Normal-Checkout subsystem, the variance of the service time here is: $Var(t_{S_j}) = E[t_{S_j}^2] - (E[t_{S_j}])^2$. Here $E[t_{S_j}^2]$ is similarly =
+$$E[M^2|M>K] = \frac{1}{1-F(K; \lambda_M)} \cdot \left[\int_{K}^{+\infty} x^2\cdot \lambda_M e^{-\lambda_M\cdot x}\ dx\right] = E[t_{S_j}^2]$$
+
+Now if we say that $\rho = t \cdot E[t_S]$
+
+We have everything needed to compute $E[N]$ in the two subsystems. And from this all the other performance indexes can be computed accordingly
+
+
+
+---
 
 
 When we verify the implemented model against the theoretical model we have to consider the "equallylikely" configuration of the classifier, because in the theoretical model that we proposed the load balancing is static and not dependent on the actual state of the system. For this reason we considered the case where inside a subsystem (quick or normal tills) the probability to be routed in a till is the same. 
