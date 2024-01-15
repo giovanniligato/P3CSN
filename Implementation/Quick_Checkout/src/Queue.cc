@@ -114,7 +114,7 @@ void Queue::arrival(Customer *customer)
 simtime_t Queue::startService(Customer *customer)
 {
     // gather queueing time statistics
-    simtime_t d = simTime() - customer->getTimestamp();     // Waiting Time (?)
+    simtime_t d = simTime() - customer->getTimestamp();
     emit(queueingTimeSignal, d);
     customer->setTotalQueueingTime(customer->getTotalQueueingTime() + d);
     EV << "Starting service of " << customer->getName() << endl;

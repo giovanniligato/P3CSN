@@ -455,6 +455,16 @@ $\mu = \ln(\frac{E[M]^2}{\sqrt{Var(M) + E[M]^2}})$
 $\sigma^2 = \ln(1 + \frac{Var(M)}{E[M]^2})$
 
 
+Imposing the mean and the variance of M to be as the exponential case, we get the following values for the parameters of the lognormal distribution:
+
+meanT = 40
+meanM = 15
+
+E[M] = 15 - 1 = 14
+Var(M) = 14^2 = 196
+
+
+
 ## Factors Calibration
 
 We have to tune the simulation parameters so that scenarios are realistic. Considering the information reported in (https://homafiles.info/2009/08/20/how-long-do-you-wait-in-line-to-checkout-at-the-supermarket/) we can see that there is stated that:
