@@ -1,11 +1,3 @@
-//
-// This file is part of an OMNeT++/OMNEST simulation example.
-//
-// Copyright (C) 2006-2015 OpenSim Ltd.
-//
-// This file is distributed WITHOUT ANY WARRANTY. See the file
-// `license' for details on this and other legal matters.
-//
 
 #include "Source.h"
 #include "Customer_m.h"
@@ -25,6 +17,8 @@ Customer *SourceBase::createCustomer()
     char buf[80];
     sprintf(buf, "%.60s-%d", "Customer", ++customerCounter);
     Customer *customer = new Customer(buf);
+    
+    // The round operation is performed to assure an integer number of items inside a cart
     customer->setNumberOfItems(round(par("numberOfItems")));
     return customer;
 }
@@ -34,7 +28,6 @@ void SourceBase::finish()
     emit(createdSignal, customerCounter);
 }
 
-//----
 
 Define_Module(Source);
 
@@ -66,7 +59,6 @@ void Source::handleMessage(cMessage *msg)
     }
 }
 
-//----
 
 Define_Module(SourceOnce);
 

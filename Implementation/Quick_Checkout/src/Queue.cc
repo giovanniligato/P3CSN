@@ -1,11 +1,3 @@
-//
-// This file is part of an OMNeT++/OMNEST simulation example.
-//
-// Copyright (C) 2006-2015 OpenSim Ltd.
-//
-// This file is distributed WITHOUT ANY WARRANTY. See the file
-// `license' for details on this and other legal matters.
-//
 
 #include "Queue.h"
 #include "Customer_m.h"
@@ -55,7 +47,7 @@ void Queue::handleMessage(cMessage *msg)
         arrival(customer);
 
         if (!customerServiced) {
-            // processor was idle
+            // cashier was idle
             customerServiced = customer;
             emit(busySignal, true);
             simtime_t serviceTime = startService(customerServiced);
@@ -95,7 +87,7 @@ Customer *Queue::getFromQueue()
     }
     else {
         customer = (Customer *)queue.back();
-        // FIXME this may have bad performance as remove uses linear search
+        
         queue.remove(customer);
     }
     return customer;

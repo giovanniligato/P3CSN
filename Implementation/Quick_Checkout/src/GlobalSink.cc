@@ -1,11 +1,3 @@
-//
-// This file is part of an OMNeT++/OMNEST simulation example.
-//
-// Copyright (C) 2006-2015 OpenSim Ltd.
-//
-// This file is distributed WITHOUT ANY WARRANTY. See the file
-// `license' for details on this and other legal matters.
-//
 
 #include "GlobalSink.h"
 #include "Customer_m.h"
@@ -56,7 +48,7 @@ void GlobalSink::finish()
     EV<<"Tot. code normali : "<<qN<<"\n";
     EV<<"Percentuale code veloci : "<<(double)qF/(qF+qN)<<"\n";
     EV<<"Percentuale code normali : "<<(double)qN/(qF+qN)<<"\n";
-    // TODO missing scalar statistics
+
 }
 
 }; //namespace

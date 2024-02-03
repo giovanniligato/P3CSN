@@ -1,11 +1,3 @@
-//
-// This file is part of an OMNeT++/OMNEST simulation example.
-//
-// Copyright (C) 2006-2015 OpenSim Ltd.
-//
-// This file is distributed WITHOUT ANY WARRANTY. See the file
-// `license' for details on this and other legal matters.
-//
 
 #ifndef __QUEUEING_CLASSIFIER_H
 #define __QUEUEING_CLASSIFIER_H
@@ -20,7 +12,7 @@ namespace queueing {
 class QUEUEING_API Classifier : public cSimpleModule
 {
     private:
-        const char *policy;   // The policy we are using 
+        const char *policy;   // The policy used
         int K;
         int C;
         double p;

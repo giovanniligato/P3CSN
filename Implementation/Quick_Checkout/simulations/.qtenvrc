@@ -1,9 +1,9 @@
 [General]
-last-configname=Warmup-Period
-last-runnumber=15
+last-configname=Test
+last-runnumber=44
 
 [RunModeProfiles]
-run-playback-speed=91.20108393559097
+run-playback-speed=19.054607179632473
 run-min-playback-speed=0.01
 run-max-playback-speed=100
 run-min-animation-speed=nan
