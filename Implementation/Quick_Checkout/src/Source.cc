@@ -19,7 +19,7 @@ Customer *SourceBase::createCustomer()
     Customer *customer = new Customer(buf);
     
     // The round operation is performed to assure an integer number of items inside a cart
-    customer->setNumberOfItems(round(par("numberOfItems")));
+    customer->setNumberOfItems(round((double)par("numberOfItems")));
     return customer;
 }
 

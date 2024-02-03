@@ -19,7 +19,7 @@ simple Source
         @display("i=block/source");
         int numCustomers = default(-1);                         // number of customers to be generated (-1 means no limit)
         volatile double interArrivalTime @unit(s);              // time between generated customers
-        volatile double numberOfItems;
+        volatile double numberOfItems;                          // number of items in the cart
         double startTime @unit(s) = default(interArrivalTime);  // when the module sends out the first customer
         double stopTime @unit(s) = default(-1s);                // when the module stops the customer generation (-1 means no limit)
     	
